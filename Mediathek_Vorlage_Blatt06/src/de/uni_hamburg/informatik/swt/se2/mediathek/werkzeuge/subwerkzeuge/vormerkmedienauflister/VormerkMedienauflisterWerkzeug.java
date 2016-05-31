@@ -153,26 +153,26 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug
         List<VormerkMedienFormatierer> medienFormatierer = new ArrayList<VormerkMedienFormatierer>();
         for (Medium medium : medienListe)
         {
-            VormerkKarte vormerkKarte = _verleihService
-                .getVormerkKarteFuer(medium);
+            Kunde entleiher = null;
+            Kunde vormerker1 = null;
+            Kunde vormerker2 = null;
+            Kunde vormerker3 = null;
+
+            VormerkKarte vormerkKarte = _verleihService.getVormerkKarteFuer(medium);
             if (vormerkKarte != null)
             {
-                Kunde[] vormerkListe = (Kunde[]) vormerkKarte
-                    .get_vormerkerListe()
-                    .toArray();
-                Verleihkarte verleihkarte = _verleihService
-                    .getVerleihkarteFuer(medium);
-                Kunde entleiher = null;
+                Kunde[] vormerkListe = (Kunde[]) vormerkKarte.get_vormerkerListe().toArray();
+                Verleihkarte verleihkarte = _verleihService.getVerleihkarteFuer(medium);
                 if (verleihkarte != null)
                 {
                     entleiher = verleihkarte.getEntleiher();
                 }
-                Kunde vormerker1 = vormerkListe[0];
-                Kunde vormerker2 = vormerkListe[1];
-                Kunde vormerker3 = vormerkListe[2];
-                medienFormatierer.add(new VormerkMedienFormatierer(medium,
-                        entleiher, vormerker1, vormerker2, vormerker3));
+                vormerker1 = vormerkListe[0];
+                vormerker2 = vormerkListe[1];
+                vormerker3 = vormerkListe[2];
             }
+            medienFormatierer.add(new VormerkMedienFormatierer(medium,
+                    entleiher, vormerker1, vormerker2, vormerker3));
 
         }
         _ui.getMedienAuflisterTableModel()
