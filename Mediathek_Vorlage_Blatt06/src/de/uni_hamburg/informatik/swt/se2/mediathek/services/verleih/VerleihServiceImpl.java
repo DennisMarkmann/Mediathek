@@ -139,7 +139,14 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
     public boolean istVerleihenMoeglich(Kunde kunde, List<Medium> medien) {
         assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
         assert medienImBestand(medien) : "Vorbedingung verletzt: medienImBestand(medien)";
-        // TODO Wenn Vormerkungen vorhanden --> nur an ersten Vormerker möglich
+        
+        for(Medium medium : medien){
+            VormerkKarte vormerkKarte = getVormerkKarteFuer(medium);
+            if (vormerkKarte != null && !vormerkKarte.istListeEmpty() && !vormerkKarte.equalsErsterVormerker(kunde)){
+                return false;
+            }
+        }
+        
         return sindAlleNichtVerliehen(medien);
     }
 

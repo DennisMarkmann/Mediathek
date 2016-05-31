@@ -113,5 +113,12 @@ public class VormerkKarte {
     public boolean istKomplettVorgemerkt(){
         return 3 <= this.get_vormerkerListe().size();
     }
-
+    
+    public boolean istListeEmpty(){
+        return 0 == this.get_vormerkerListe().size();
+    }
+    
+    public boolean equalsErsterVormerker(Kunde kunde){
+       return this.get_vormerkerListe().peek().equals(kunde);
+    }
 }
