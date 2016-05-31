@@ -76,6 +76,7 @@ public class VormerkKarte {
         _vormerkerListe.poll();
     }
 
+    // unused
     public Kunde gibKundeFuerIndex(int index) {
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         Kunde kunde = null;
@@ -89,14 +90,28 @@ public class VormerkKarte {
         ArrayList<Kunde> kunden = new ArrayList<Kunde>();
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         for (int i = 0; i < 3; i++) {
-            if (iterator.hasNext()){
+            if (iterator.hasNext()) {
                 kunden.add(iterator.next());
-            }
-            else {
+            } else {
                 kunden.add(null);
             }
         }
         return kunden;
+    }
+
+    public boolean istVerliehenAnKunden(Kunde kunde) {
+        //TODO check / fix
+        Iterator<Kunde> iterator = _vormerkerListe.iterator();
+        for (int i = 0; i < 3; i++) {
+                if (iterator.hasNext() && iterator.next().equals(kunde)) {
+                    return true;
+                }
+        }
+        return false;
+    }
+    
+    public boolean istKomplettVorgemerkt(){
+        return 3 <= this.get_vormerkerListe().size();
     }
 
 }
