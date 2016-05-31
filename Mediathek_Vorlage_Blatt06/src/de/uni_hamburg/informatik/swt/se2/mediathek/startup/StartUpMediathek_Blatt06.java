@@ -27,8 +27,6 @@ public class StartUpMediathek_Blatt06
             "./bestand/kundenstamm.txt");
     private static final File MEDIEN_DATEI = new File(
             "./bestand/medienbestand.txt");
-    private static final File VORMERK_DATEI = new File(
-            "./bestand/vormerkbestand.txt");
 
     private static KundenstammService _kundenstamm;
     private static MedienbestandService _medienbestand;
@@ -42,7 +40,7 @@ public class StartUpMediathek_Blatt06
         try
         {
             DatenEinleser datenEinleser = new DatenEinleser(MEDIEN_DATEI,
-                    KUNDEN_DATEI, VORMERK_DATEI);
+                    KUNDEN_DATEI);
             datenEinleser.leseDaten();
             _medienbestand = new MedienbestandServiceImpl(
                     datenEinleser.getMedien());

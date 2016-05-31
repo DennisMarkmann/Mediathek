@@ -31,11 +31,6 @@ public class DatenEinleser
     private final File _kundenDatei;
 
     /**
-     * Die Datei in der die Vormerkungen gespeichert sind.
-     */
-    private final File _vormerkDatei;
-
-    /**
      * Die eingelesenen Kunden, ist null wenn noch nicht eingelesen wurde.
      */
     private List<Kunde> _kunden;
@@ -68,14 +63,12 @@ public class DatenEinleser
      * @require medienDatei != null
      * @require kundenDatei != null
      */
-    public DatenEinleser(File medienDatei, File kundenDatei, File vormerkDatei)
+    public DatenEinleser(File medienDatei, File kundenDatei)
     {
         assert medienDatei != null : "Vorbedingung verletzt: medienDatei != null";
         assert kundenDatei != null : "Vorbedingung verletzt: kundenDatei != null";
-        assert vormerkDatei != null : "Vorbedingung verletzt: vormerkDatei != null";
 
         //TODO implement logic (later..)
-        _vormerkDatei = null;
         _medienDatei = medienDatei;
         _kundenDatei = kundenDatei;
     }
