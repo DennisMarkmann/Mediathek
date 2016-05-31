@@ -162,11 +162,10 @@ public class AusleiheMedienauflisterWerkzeug extends ObservableSubWerkzeug
                 ersterVormerker = vormerkKarte.get_vormerkerListe()
                     .peek();
             }
-            if (ersterVormerker != null)
-            {
+            
                 medienFormatierer.add(new AusleiheMedienFormatierer(medium,
                         istVerliehen, ersterVormerker));
-            }
+            
         }
         _ui.getMedienAuflisterTableModel()
             .setMedien(medienFormatierer);
