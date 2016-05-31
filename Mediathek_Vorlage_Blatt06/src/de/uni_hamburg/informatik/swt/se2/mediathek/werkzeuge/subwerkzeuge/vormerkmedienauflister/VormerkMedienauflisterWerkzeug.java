@@ -8,6 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Kunde;
+import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Verleihkarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.VormerkKarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.ServiceObserver;
@@ -154,15 +155,25 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug
         {
             VormerkKarte vormerkKarte = _verleihService
                 .getVormerkKarteFuer(medium);
-            Kunde[] vormerkListe = (Kunde[]) vormerkKarte.get_vormerkerListe()
-                .toArray();
-            Kunde entleiher = null;
-            Kunde vormerker1 = vormerkListe[1];
-            Kunde vormerker2 = vormerkListe[2];
-            Kunde vormerker3 = vormerkListe[3];
+            if (vormerkKarte != null)
+            {
+                Kunde[] vormerkListe = (Kunde[]) vormerkKarte
+                    .get_vormerkerListe()
+                    .toArray();
+                Verleihkarte verleihkarte = _verleihService
+                    .getVerleihkarteFuer(medium);
+                Kunde entleiher = null;
+                if (verleihkarte != null)
+                {
+                    entleiher = verleihkarte.getEntleiher();
+                }
+                Kunde vormerker1 = vormerkListe[0];
+                Kunde vormerker2 = vormerkListe[1];
+                Kunde vormerker3 = vormerkListe[2];
+                medienFormatierer.add(new VormerkMedienFormatierer(medium,
+                        entleiher, vormerker1, vormerker2, vormerker3));
+            }
 
-            medienFormatierer.add(new VormerkMedienFormatierer(medium,
-                    entleiher, vormerker1, vormerker2, vormerker3));
         }
         _ui.getMedienAuflisterTableModel()
             .setMedien(medienFormatierer);
