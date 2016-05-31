@@ -151,6 +151,10 @@ public class AusleihWerkzeug
             ArrayBlockingQueue<Kunde> vormerkListe = _verleihService
                 .getVormerkKarteFuer(medium)
                 .get_vormerkerListe();
+            if (vormerkKarte == null)
+            {
+
+            }
             if (vormerkListe == null)
             {
                 ausleiheMoeglich = true;
