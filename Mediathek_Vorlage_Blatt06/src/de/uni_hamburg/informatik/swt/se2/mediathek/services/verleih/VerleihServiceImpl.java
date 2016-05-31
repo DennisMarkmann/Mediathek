@@ -147,7 +147,7 @@ public class VerleihServiceImpl extends AbstractObservableService
     public VormerkKarte getVormerkKarteFuer(Medium medium)
     {
         return null;
-        //        return _vormerkKarten.get(medium);
+        //TODO return _vormerkKarten.get(medium) (later..);
     }
 
     @Override

@@ -74,7 +74,7 @@ public class DatenEinleser
         assert kundenDatei != null : "Vorbedingung verletzt: kundenDatei != null";
         assert vormerkDatei != null : "Vorbedingung verletzt: vormerkDatei != null";
 
-        //TODO implement logic
+        //TODO implement logic (later..)
         _vormerkDatei = null;
         _medienDatei = medienDatei;
         _kundenDatei = kundenDatei;
