@@ -5,6 +5,8 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkEx
 import static org.junit.Assert.assertEquals;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import org.junit.Test;
+
 public class VormerkkarteTest 
 {
     VormerkKarte TEST_Vormerkkarte;
@@ -15,6 +17,7 @@ public class VormerkkarteTest
     Medium TEST_medium;
     ArrayBlockingQueue<Kunde> TEST_vormerkerListe;
     
+    //TODO fix tests !
     public VormerkkarteTest()
     {        
         Kunde kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
@@ -25,11 +28,13 @@ public class VormerkkarteTest
         VormerkKarte TEST_Vormerkkarte = new VormerkKarte(TEST_medium, kunde1);
     }
     
+    @Test
     public void TESTEgetMedium()
     {
         assertEquals(TEST_medium, TEST_Vormerkkarte.get_medium());
     }
     
+    @Test
     public void TESTEaddVormerker()
     {
 
@@ -37,6 +42,7 @@ public class VormerkkarteTest
         assertEquals(kunde1,TEST_vormerkerListe.peek());
     }
     
+    @Test
     public void TESTEverleiheAnVormerker()
     {
         try
