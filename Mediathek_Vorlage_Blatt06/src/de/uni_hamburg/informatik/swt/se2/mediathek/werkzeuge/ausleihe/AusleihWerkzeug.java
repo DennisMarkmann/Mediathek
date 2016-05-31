@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Datum;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Kunde;
+import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.VormerkKarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.ServiceObserver;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.kundenstamm.KundenstammService;
@@ -148,12 +149,13 @@ public class AusleihWerkzeug
         boolean ausleiheMoeglich = false;
         for (Medium medium : medien)
         {
-            ArrayBlockingQueue<Kunde> vormerkListe = _verleihService
-                .getVormerkKarteFuer(medium)
-                .get_vormerkerListe();
-            if (vormerkKarte == null)
+            VormerkKarte vormerkKarte = _verleihService
+                    .getVormerkKarteFuer(medium);
+            ArrayBlockingQueue<Kunde> vormerkListe = null;
+            if (vormerkKarte != null)
             {
-
+                vormerkListe = vormerkKarte
+                        .get_vormerkerListe();
             }
             if (vormerkListe == null)
             {

@@ -2,18 +2,8 @@ package de.uni_hamburg.informatik.swt.se2.mediathek.materialien;
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Kundennummer;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
 import java.util.concurrent.ArrayBlockingQueue;
-
-import org.junit.Test;
-
 
 public class VormerkkarteTest 
 {
@@ -28,6 +18,7 @@ public class VormerkkarteTest
     public VormerkkarteTest()
     {        
         Kunde kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
+        //TODO unused
         Kunde kunde2 = new Kunde(new Kundennummer(123452), "ich2", "du2");
         Kunde kunde3 = new Kunde(new Kundennummer(123453), "ich3", "du3");
         Kunde kunde4 = new Kunde(new Kundennummer(123454), "ich4", "du4");
