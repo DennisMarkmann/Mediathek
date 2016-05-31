@@ -79,7 +79,7 @@ class VerleihProtokollierer
     public void protokolliere(String ereignis, VormerkKarte vormerkKarte)
             throws ProtokollierException
     {
-        //TODO
+        //TODO implement
     }
 
     /**

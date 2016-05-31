@@ -176,6 +176,7 @@ public class VormerkWerkzeug
     private void merkeAusgewaehlteMedienVor()
     {
 
+        //TODO doesnt work
         List<Medium> selectedMedien = _medienAuflisterWerkzeug
             .getSelectedMedien();
         Kunde selectedKunde = _kundenAuflisterWerkzeug.getSelectedKunde();

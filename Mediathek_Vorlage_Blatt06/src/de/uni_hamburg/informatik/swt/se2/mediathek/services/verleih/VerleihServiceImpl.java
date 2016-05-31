@@ -146,8 +146,18 @@ public class VerleihServiceImpl extends AbstractObservableService
     @Override
     public VormerkKarte getVormerkKarteFuer(Medium medium)
     {
-        return null;
-        //TODO return _vormerkKarten.get(medium) (later..);
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: medienImBestand(medien)";
+        VormerkKarte vormerkKarte = null;
+        try
+        {
+            vormerkKarte = _vormerkKarten.get(medium);
+        }
+        catch (NullPointerException e)
+        {
+            //TODO fix this dirty code
+        }
+        return vormerkKarte;
     }
 
     @Override

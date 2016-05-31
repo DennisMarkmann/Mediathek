@@ -154,7 +154,6 @@ public class AusleiheMedienauflisterWerkzeug extends ObservableSubWerkzeug
         for (Medium medium : medienListe)
         {
             boolean istVerliehen = _verleihService.istVerliehen(medium);
-            //TODO dirty af
             VormerkKarte vormerkKarte = _verleihService
                 .getVormerkKarteFuer(medium);
             Kunde ersterVormerker = null;
