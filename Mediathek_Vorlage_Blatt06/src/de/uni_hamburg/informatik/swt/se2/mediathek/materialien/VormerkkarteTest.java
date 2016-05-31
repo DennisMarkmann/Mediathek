@@ -1,60 +1,54 @@
 package de.uni_hamburg.informatik.swt.se2.mediathek.materialien;
+
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Kundennummer;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
 import static org.junit.Assert.assertEquals;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import org.junit.Before;
 import org.junit.Test;
 
-public class VormerkkarteTest 
-{
-    VormerkKarte TEST_Vormerkkarte;
-    Kunde kunde1;
-    Kunde kunde2;
-    Kunde kunde3;
-    Kunde kunde4;
-    Medium TEST_medium;
-    ArrayBlockingQueue<Kunde> TEST_vormerkerListe;
-    
-    //TODO fix tests !
-    public VormerkkarteTest()
-    {        
-        Kunde kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
-        //TODO unused
-        Kunde kunde2 = new Kunde(new Kundennummer(123452), "ich2", "du2");
-        Kunde kunde3 = new Kunde(new Kundennummer(123453), "ich3", "du3");
-        Kunde kunde4 = new Kunde(new Kundennummer(123454), "ich4", "du4");
-        VormerkKarte TEST_Vormerkkarte = new VormerkKarte(TEST_medium, kunde1);
-    }
-    
-    @Test
-    public void TESTEgetMedium()
-    {
-        assertEquals(TEST_medium, TEST_Vormerkkarte.get_medium());
-    }
-    
-    @Test
-    public void TESTEaddVormerker()
-    {
+public class VormerkkarteTest {
 
-        TEST_vormerkerListe = TEST_Vormerkkarte.get_vormerkerListe();
-        assertEquals(kunde1,TEST_vormerkerListe.peek());
+    ArrayBlockingQueue<Kunde> vormerkerListe;
+    Kunde _kunde1;
+    Kunde _kunde2;
+    Kunde _kunde3;
+    Kunde _kunde4;
+    Medium _medium;
+    VormerkKarte _vormerkkarte;
+
+    @Before
+    public void generateTestDate() {
+        _kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
+        _kunde2 = new Kunde(new Kundennummer(123452), "ich2", "du2");
+        _kunde3 = new Kunde(new Kundennummer(123453), "ich3", "du3");
+        _kunde4 = new Kunde(new Kundennummer(123454), "ich4", "du4");
+        _vormerkkarte = new VormerkKarte(_medium, _kunde1);
     }
-    
+
     @Test
-    public void TESTEverleiheAnVormerker()
-    {
-        try
-        {
-            TEST_Vormerkkarte.addVormerker(kunde2);
+    public void testGetMedium() {
+        assertEquals(_medium, _vormerkkarte.get_medium());
+    }
+
+    @Test
+    public void testAddVormerker() {
+
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.peek());
+    }
+
+    @Test
+    public void testeVerleiheAnVormerker() {
+        try {
+            _vormerkkarte.addVormerker(_kunde2);
+        } catch (VormerkException e) {
+            // Testing
         }
-        catch(VormerkException e)
-        {
-            //Testing
-        }
-        TEST_Vormerkkarte.verleiheAnVormerker();
-        TEST_vormerkerListe = TEST_Vormerkkarte.get_vormerkerListe();
-        assertEquals(kunde2,TEST_vormerkerListe.peek());               
+        _vormerkkarte.verleiheAnVormerker();
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde2, vormerkerListe.peek());
     }
 }

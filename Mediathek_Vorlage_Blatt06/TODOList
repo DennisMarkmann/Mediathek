@@ -1,0 +1,13 @@
+- Tests: Tests schreiben (zu allen neuen Methoden die Logik beinhalten)
+
+- TODO's abarbeiten (sinnvoll bitte und nicht einfach entfernen)
+
+- JavaDoc Kommentare (zu allen neuen Methoden)
+
+- Anwendung komplett testen (Alle Anforderungen einzeln Schritt für Schritt sowie generelles Verhalten)
+	-	Probleme hier kommentieren / beheben / TODOs im Code schreiben wo der Fehler auftritt
+  
+- Neuen Code && Relevante Klassen durchgehen + optimieren bzw. abnahmefähig machen
+	- Sollte es größere Probleme dabei geben oder man nicht weiter wissen: TODOs an den jeweiligen Code schreiben
+	
+- UML Diagramm anpassen
