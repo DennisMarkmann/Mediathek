@@ -16,7 +16,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.hauptwerkzeug.Media
 
 /**
  * Startet die Hauptanwendung mit grafischer Oberfläche.
- * 
+ *
  * @author SE2-Team
  * @version SoSe 2016
  */
@@ -27,10 +27,35 @@ public class StartUpMediathek_Blatt06
             "./bestand/kundenstamm.txt");
     private static final File MEDIEN_DATEI = new File(
             "./bestand/medienbestand.txt");
+    private static final File VORMERK_DATEI = new File(
+            "./bestand/vormerkbestand.txt");
 
     private static KundenstammService _kundenstamm;
     private static MedienbestandService _medienbestand;
     private static VerleihService _verleihService;
+
+    /**
+     * Erstellt die Services und lädt die Daten.
+     */
+    private static void erstelleServices()
+    {
+        try
+        {
+            DatenEinleser datenEinleser = new DatenEinleser(MEDIEN_DATEI,
+                    KUNDEN_DATEI, VORMERK_DATEI);
+            datenEinleser.leseDaten();
+            _medienbestand = new MedienbestandServiceImpl(
+                    datenEinleser.getMedien());
+            _kundenstamm = new KundenstammServiceImpl(
+                    datenEinleser.getKunden());
+            _verleihService = new VerleihServiceImpl(_kundenstamm,
+                    _medienbestand, datenEinleser.getVerleihkarten());
+        }
+        catch (DateiLeseException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Main-Methode, mit der die Anwendung gestartet wird.
@@ -45,35 +70,13 @@ public class StartUpMediathek_Blatt06
         // Dies ist die korrekte Art eine Swing-Anwendnung zu starten.
         SwingUtilities.invokeLater(new Runnable()
         {
+            @Override
             public void run()
             {
                 mediathekWerkzeug.zeigeFenster();
             }
         });
 
-    }
-
-    /**
-     * Erstellt die Services und lädt die Daten.
-     */
-    private static void erstelleServices()
-    {
-        try
-        {
-            DatenEinleser datenEinleser = new DatenEinleser(MEDIEN_DATEI,
-                    KUNDEN_DATEI);
-            datenEinleser.leseDaten();
-            _medienbestand = new MedienbestandServiceImpl(
-                    datenEinleser.getMedien());
-            _kundenstamm = new KundenstammServiceImpl(
-                    datenEinleser.getKunden());
-            _verleihService = new VerleihServiceImpl(_kundenstamm,
-                    _medienbestand, datenEinleser.getVerleihkarten());
-        }
-        catch (DateiLeseException e)
-        {
-            e.printStackTrace();
-        }
     }
 
 }

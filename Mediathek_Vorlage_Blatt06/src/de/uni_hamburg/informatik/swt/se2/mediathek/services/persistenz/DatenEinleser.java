@@ -13,7 +13,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 /**
  * Ein DatenEinleser kann verwendet werden um Kunden, Medien und Verleihkarten
  * einzulesen.
- * 
+ *
  * @author SE2-Team
  * @version SoSe 2016
  */
@@ -29,6 +29,11 @@ public class DatenEinleser
      * Die Datei in der die Kunden gespeichert sind.
      */
     private final File _kundenDatei;
+
+    /**
+     * Die Datei in der die Vormerkungen gespeichert sind.
+     */
+    private final File _vormerkDatei;
 
     /**
      * Die eingelesenen Kunden, ist null wenn noch nicht eingelesen wurde.
@@ -47,33 +52,82 @@ public class DatenEinleser
     private List<Verleihkarte> _verleihkarten;
 
     /**
+     * Die eingelesenen Vormerkkarten, ist null wenn noch nicht eingelesen
+     * wurde.
+     */
+    private List<Verleihkarte> _vormerkkarten;
+
+    /**
      * Initialisiert einen neuen DatenEinleser, der aus den angebenen Dateien
      * einliest.
-     * 
+     *
      * @param medienDatei Die Datei in der die Medien gespeichert sind.
      * @param kundenDatei Die Datei in der die Kunden gespeichert sind.
-     * 
+     * @param vormerkDatei
+     *
      * @require medienDatei != null
      * @require kundenDatei != null
      */
-    public DatenEinleser(File medienDatei, File kundenDatei)
+    public DatenEinleser(File medienDatei, File kundenDatei, File vormerkDatei)
     {
         assert medienDatei != null : "Vorbedingung verletzt: medienDatei != null";
         assert kundenDatei != null : "Vorbedingung verletzt: kundenDatei != null";
+        assert vormerkDatei != null : "Vorbedingung verletzt: vormerkDatei != null";
 
+        //TODO implement logic
+        _vormerkDatei = null;
         _medienDatei = medienDatei;
         _kundenDatei = kundenDatei;
     }
 
     /**
+     * Gibt die eingelesenen Kunden zurück.
+     *
+     * @return Die eingelesenen Kunden.
+     *
+     * @require wurdeEingelesen()
+     */
+    public List<Kunde> getKunden()
+    {
+        assert wurdeEingelesen() : "Vorbedingung verletzt: wurdeEingelesen()";
+        return _kunden;
+    }
+
+    /**
+     * Gibt die eingelesenen Medien zurück.
+     *
+     * @return Die eingelesenen Medien.
+     *
+     * @require wurdeEingelesen()
+     */
+    public List<Medium> getMedien()
+    {
+        assert wurdeEingelesen() : "Vorbedingung verletzt: wurdeEingelesen()";
+        return _medien;
+    }
+
+    /**
+     * Gibt die eingelesenen Verleihkarten zurück.
+     *
+     * @return Die eingelesenen Verleihkarten.
+     *
+     * @require wurdeEingelesen()
+     */
+    public List<Verleihkarte> getVerleihkarten()
+    {
+        assert wurdeEingelesen() : "Vorbedingung verletzt: wurdeEingelesen()";
+        return _verleihkarten;
+    }
+
+    /**
      * Liest die Daten aus den, beim Konstruktoraufruf angegebenen Dateien aus.
-     * 
+     *
      * Das Ergebnis des Einlesens kann mit #getKunden(), #getMedien() und
      * #getVerleihkarten() abgefragt werden.
-     * 
+     *
      * @throws DateiLeseException Wenn ein Fehler beim Lesen der Dateien
      *             auftritt.
-     * 
+     *
      * @ensure wurdeEingelesen() == true
      */
     public void leseDaten() throws DateiLeseException
@@ -97,51 +151,12 @@ public class DatenEinleser
 
     /**
      * Prüft ob eingelesen wurde.
-     * 
+     *
      * @return true wenn eingelesen wurde, sonst false .
      */
     public boolean wurdeEingelesen()
     {
         return _kunden != null;
-    }
-
-    /**
-     * Gibt die eingelesenen Kunden zurück.
-     * 
-     * @return Die eingelesenen Kunden.
-     * 
-     * @require wurdeEingelesen()
-     */
-    public List<Kunde> getKunden()
-    {
-        assert wurdeEingelesen() : "Vorbedingung verletzt: wurdeEingelesen()";
-        return _kunden;
-    }
-
-    /**
-     * Gibt die eingelesenen Medien zurück.
-     * 
-     * @return Die eingelesenen Medien.
-     * 
-     * @require wurdeEingelesen()
-     */
-    public List<Medium> getMedien()
-    {
-        assert wurdeEingelesen() : "Vorbedingung verletzt: wurdeEingelesen()";
-        return _medien;
-    }
-
-    /**
-     * Gibt die eingelesenen Verleihkarten zurück.
-     * 
-     * @return Die eingelesenen Verleihkarten.
-     * 
-     * @require wurdeEingelesen()
-     */
-    public List<Verleihkarte> getVerleihkarten()
-    {
-        assert wurdeEingelesen() : "Vorbedingung verletzt: wurdeEingelesen()";
-        return _verleihkarten;
     }
 
 }

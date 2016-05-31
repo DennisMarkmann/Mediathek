@@ -5,15 +5,25 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Verleihkarte;
+import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.VormerkKarte;
 
 /**
  * Ein Verleihprotokollierer schreibt alle Verleihvorgänge in eine Datei.
- * 
+ *
  * @author SE2-Team
  * @version SoSe 2016
  */
 class VerleihProtokollierer
 {
+    /************************************************
+     * Alternative entsprechend Zusatzaufgabe 5.1.7 *
+     ************************************************/
+
+    public enum VerleihEreignis
+    {
+        AUSLEIHE, RUECKGABE;
+    }
+
     /**
      * Textrepräsentation für das Ereignis Ausleihe
      */
@@ -31,16 +41,16 @@ class VerleihProtokollierer
 
     /**
      * Schreibt eine übergebene Verleihkarte ins Protokoll.
-     * 
+     *
      * @param ereignis Der Name des Verleihereignis: mögliche Namen sind durch
      *            die Konstanten EREIGNIS_AUSLEIHE und EREIGNIS_RUECKGABE
      *            definiert.
      * @param verleihkarte eine Verleihkarte, die das Verleihereignis betrifft.
-     * 
+     *
      * @require EREIGNIS_AUSLEIHE.equals(ereignis) ||
      *          EREIGNIS_RUECKGABE.equals(ereignis)
      * @require verleihkarte != null
-     * 
+     *
      * @throws ProtokollierException wenn das Protokollieren nicht geklappt hat.
      */
     public void protokolliere(String ereignis, Verleihkarte verleihkarte)
@@ -66,26 +76,23 @@ class VerleihProtokollierer
         }
     }
 
-    /************************************************
-     * Alternative entsprechend Zusatzaufgabe 5.1.7 *
-     ************************************************/
-
-    public enum VerleihEreignis
+    public void protokolliere(String ereignis, VormerkKarte vormerkKarte)
+            throws ProtokollierException
     {
-        AUSLEIHE, RUECKGABE;
+        //TODO
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * Schreibt eine übergebene Verleihkarte ins Protokoll.
-     * 
+     *
      * @param ereignis Das Verleihereignis
      * @param verleihkarte eine Verleihkarte, die das Verleihereignis betrifft.
-     * 
+     *
      * @require ereignis != null
      * @require verleihkarte != null
-     * 
+     *
      * @throws ProtokollierException wenn das Protokollieren nicht geklappt hat.
      */
     public void protokolliere(VerleihEreignis ereignis,

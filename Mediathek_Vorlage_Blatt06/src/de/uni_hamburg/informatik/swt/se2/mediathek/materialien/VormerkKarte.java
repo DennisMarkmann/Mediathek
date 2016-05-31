@@ -8,31 +8,33 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
  * Vormerkkarte als Material für Vormerkungen in der Mediathek
  * @Author SE2 4er-Team
  * @Date 25/05/2016
- * 
+ *
  */
-public class Vormerkkarte
+public class VormerkKarte
 {
 
     private final Medium _medium;
     private ArrayBlockingQueue<Kunde> _vormerkerListe;
 
     /**
-     * 
+     *
      * Konstruktor für die Vormerkkarte
      * Erstellen einer Queue mit der Kapazität von 3.
      * Nur 3 Kunden können gleichzeitig vormerken.
+     * @param kunde
      * @param das zur Vormerkkarte gehörige Medium.
-     * 
+     *
      */
-    public Vormerkkarte(Medium medium)
+    public VormerkKarte(Medium medium, Kunde kunde)
     {
         _medium = medium;
         _vormerkerListe = new ArrayBlockingQueue<Kunde>(3);
+        this.addVormerker(kunde);
     }
 
     /**
      * Hinzufügen eines Vormerkers nach dem FIFO-Prinzip.
-     * @param 
+     * @param
      */
     public void addVormerker(Kunde vormerker)
     {

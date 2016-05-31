@@ -17,10 +17,10 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.ObservableSubWerkze
 /**
  * Ein VormerkMedienauflisterWerkzeug ist ein Werkzeug zum Auflisten von Medien
  * mit ihren für das Vormerken relevanten Verleihinformationen.
- * 
+ *
  * Das Werkzeug ist beobachtbar und informiert darüber, wenn sich die Selektion
  * in der Medienliste ändert.
- * 
+ *
  * @author SE2-Team
  * @version SoSe 2016
  */
@@ -33,10 +33,10 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug
     /**
      * Initialisiert ein neues VormerkMedienauflisterWerkzeug. Es wird die
      * Benutzungsoberfläche zum Darstellen der Medien erzeugt.
-     * 
+     *
      * @param medienbestand Der Medienbestand.
      * @param verleihService Der Verleih-Service.
-     * 
+     *
      * @require medienbestand != null
      * @require verleihService != null
      */
@@ -63,37 +63,38 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug
     }
 
     /**
-     * Registriert die Aktionen, die bei bestimmten UI-Events ausgeführt werden.
+     * Gibt die Liste der vom Benutzer selektierten Medien zurück.
+     *
+     * @return Die Liste der vom Benutzer selektierten Medien.
+     *
+     * @ensure result != null
      */
-    private void registriereUIAktionen()
+    public List<Medium> getSelectedMedien()
     {
-        registriereMedienAnzeigenAktion();
+        List<Medium> result = new ArrayList<Medium>();
+        int[] selectedRows = _ui.getMedienAuflisterTable()
+            .getSelectedRows();
+        VormerkMedienTableModel medienTableModel = _ui
+            .getMedienAuflisterTableModel();
+        for (int zeile : selectedRows)
+        {
+            if (medienTableModel.zeileExistiert(zeile))
+            {
+                Medium medium = medienTableModel.getMediumFuerZeile(zeile);
+                result.add(medium);
+            }
+        }
+        return result;
     }
 
     /**
-     * Holt und setzt die Medieninformationen.
+     * Gibt das Panel dieses Subwerkzeugs zurück.
+     *
+     * @ensure result != null
      */
-    private void setzeAnzuzeigendeMedien()
+    public JPanel getUIPanel()
     {
-        List<Medium> medienListe = _medienbestand.getMedien();
-        List<VormerkMedienFormatierer> medienFormatierer = new ArrayList<VormerkMedienFormatierer>();
-        for (Medium medium : medienListe)
-        {
-            // TODO für Aufgabenblatt 6 (nicht löschen): Die
-            // VormerkMedienFormatierer müssen noch mit einem möglichen
-            // Entleiher und möglichen Vormerkern ausgestattet werden.
-            // Ist dies korrekt implementiert, erscheinen in der Vormerkansicht
-            // die Namen des Entleihers und der möglichen 3 Vormerker.
-            Kunde entleiher = null;
-            Kunde vormerker1 = null;
-            Kunde vormerker2 = null;
-            Kunde vormerker3 = null;
-
-            medienFormatierer.add(new VormerkMedienFormatierer(medium,
-                    entleiher, vormerker1, vormerker2, vormerker3));
-        }
-        _ui.getMedienAuflisterTableModel()
-            .setMedien(medienFormatierer);
+        return _ui.getUIPanel();
     }
 
     /**
@@ -134,37 +135,37 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug
     }
 
     /**
-     * Gibt die Liste der vom Benutzer selektierten Medien zurück.
-     * 
-     * @return Die Liste der vom Benutzer selektierten Medien.
-     * 
-     * @ensure result != null
+     * Registriert die Aktionen, die bei bestimmten UI-Events ausgeführt werden.
      */
-    public List<Medium> getSelectedMedien()
+    private void registriereUIAktionen()
     {
-        List<Medium> result = new ArrayList<Medium>();
-        int[] selectedRows = _ui.getMedienAuflisterTable()
-            .getSelectedRows();
-        VormerkMedienTableModel medienTableModel = _ui
-            .getMedienAuflisterTableModel();
-        for (int zeile : selectedRows)
-        {
-            if (medienTableModel.zeileExistiert(zeile))
-            {
-                Medium medium = medienTableModel.getMediumFuerZeile(zeile);
-                result.add(medium);
-            }
-        }
-        return result;
+        registriereMedienAnzeigenAktion();
     }
 
     /**
-     * Gibt das Panel dieses Subwerkzeugs zurück.
-     * 
-     * @ensure result != null
+     * Holt und setzt die Medieninformationen.
      */
-    public JPanel getUIPanel()
+    private void setzeAnzuzeigendeMedien()
     {
-        return _ui.getUIPanel();
+        List<Medium> medienListe = _medienbestand.getMedien();
+        List<VormerkMedienFormatierer> medienFormatierer = new ArrayList<VormerkMedienFormatierer>();
+        for (Medium medium : medienListe)
+        {
+            //            verleihService
+            // TODO für Aufgabenblatt 6 (nicht löschen): Die
+            // VormerkMedienFormatierer müssen noch mit einem möglichen
+            // Entleiher und möglichen Vormerkern ausgestattet werden.
+            // Ist dies korrekt implementiert, erscheinen in der Vormerkansicht
+            // die Namen des Entleihers und der möglichen 3 Vormerker.
+            Kunde entleiher = null;
+            Kunde vormerker1 = null;
+            Kunde vormerker2 = null;
+            Kunde vormerker3 = null;
+
+            medienFormatierer.add(new VormerkMedienFormatierer(medium,
+                    entleiher, vormerker1, vormerker2, vormerker3));
+        }
+        _ui.getMedienAuflisterTableModel()
+            .setMedien(medienFormatierer);
     }
 }
