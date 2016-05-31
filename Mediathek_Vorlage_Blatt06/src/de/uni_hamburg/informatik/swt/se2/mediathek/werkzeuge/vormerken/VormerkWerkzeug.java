@@ -145,12 +145,27 @@ public class VormerkWerkzeug
         List<Medium> medien = _medienAuflisterWerkzeug.getSelectedMedien();
         Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
 
-        //TODO prüfen vorgemerkt oder verliehen an Kunden
-        //TODO schon 3 mal vorgemerkt
-
         boolean vormerkenMoeglich = (kunde != null) && !medien.isEmpty();
+        if (!vormerkenMoeglich)
+        {
+            return false;
+        }
+        boolean vormerkBar = true;
+        for (Medium medium : medien)
+        {
+            vormerkBar = !_verleihService.istVerliehenAn(kunde, medium);
 
-        return vormerkenMoeglich;
+            VormerkKarte vormerkKarte = _verleihService
+                .getVormerkKarteFuer(medium);
+            if (vormerkKarte != null && 3 >= vormerkKarte.get_vormerkerListe()
+                .size())
+            {
+                vormerkBar = false;
+            }
+
+        }
+
+        return vormerkBar;
     }
 
     /**
