@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Kunde;
-import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Verleihkarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.VormerkKarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.ServiceObserver;
@@ -145,7 +144,7 @@ public class VormerkWerkzeug {
 
             VormerkKarte vormerkKarte = _verleihService.getVormerkKarteFuer(medium);
             if (vormerkKarte != null && (vormerkKarte.istKomplettVorgemerkt() || vormerkKarte.istVerliehenAnKunden(kunde)
-                    || hatKundeMediumAusgeliehen(kunde, medium)))
+                    || _verleihService.hatKundeMediumAusgeliehen(kunde, medium)))
             {
                 vormerkBar = false;
             }
@@ -155,15 +154,6 @@ public class VormerkWerkzeug {
         return vormerkBar;
     }
 
-    private boolean hatKundeMediumAusgeliehen(Kunde kunde, Medium medium) {
-        List<Verleihkarte> verleihkarten = _verleihService.getVerleihkartenFuer(kunde);
-        for (Verleihkarte verleihkarte : verleihkarten) {
-            if (verleihkarte.getMedium().equals(medium)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Merkt die ausgewählten Medien für einen Kunden vor. Diese Methode wird über einen Listener angestoßen, der reagiert, wenn

@@ -254,6 +254,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
 
             _verleihkarten.put(medium, verleihkarte);
             _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_AUSLEIHE, verleihkarte);
+            entferneVormerkKarte(medium, kunde);
         }
         // XXX Was passiert wenn das Protokollieren mitten in der Schleife
         // schief geht? informiereUeberAenderung in einen finally Block?
@@ -287,5 +288,21 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
     private VormerkKarte sucheVormerkKarte(Medium medium) {
         return _vormerkKarten.get(medium);
     }
-
+    
+    private void entferneVormerkKarte(Medium medium, Kunde kunde){
+        VormerkKarte vormerkKarte = this.getVormerkKarteFuer(medium);
+        if (vormerkKarte.gibKundeFuerIndex(1).equals(kunde)){
+            vormerkKarte.verleiheAnVormerker();
+        }
+    }
+    
+    public boolean hatKundeMediumAusgeliehen(Kunde kunde, Medium medium) {
+        List<Verleihkarte> verleihkarten = this.getVerleihkartenFuer(kunde);
+        for (Verleihkarte verleihkarte : verleihkarten) {
+            if (verleihkarte.getMedium().equals(medium)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

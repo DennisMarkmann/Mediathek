@@ -247,4 +247,6 @@ public interface VerleihService extends ObservableService
     void vormerkenAn(Kunde kunde, List<Medium> medien)
             throws ProtokollierException;
 
+    boolean hatKundeMediumAusgeliehen(Kunde kunde, Medium medium);
+
 }
