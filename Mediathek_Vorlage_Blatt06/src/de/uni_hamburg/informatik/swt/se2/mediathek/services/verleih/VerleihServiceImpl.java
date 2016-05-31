@@ -144,6 +144,12 @@ public class VerleihServiceImpl extends AbstractObservableService
     }
 
     @Override
+    public VormerkKarte getVormerkKarteFuer(Medium medium)
+    {
+        return _vormerkKarten.get(medium);
+    }
+
+    @Override
     public boolean istVerleihenMoeglich(Kunde kunde, List<Medium> medien)
     {
         assert kundeImBestand(

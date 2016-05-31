@@ -13,6 +13,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.ServiceObserver;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.kundenstamm.KundenstammService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.medienbestand.MedienbestandService;
+import de.uni_hamburg.informatik.swt.se2.mediathek.services.verleih.ProtokollierException;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.verleih.VerleihService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.SubWerkzeugObserver;
 import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.subwerkzeuge.kundenauflister.KundenauflisterWerkzeug;
@@ -143,6 +144,7 @@ public class VormerkWerkzeug
     {
         List<Medium> medien = _medienAuflisterWerkzeug.getSelectedMedien();
         Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
+
         //TODO prüfen vorgemerkt oder verliehen an Kunden
         //TODO schon 3 mal vorgemerkt
 
@@ -162,7 +164,15 @@ public class VormerkWerkzeug
         List<Medium> selectedMedien = _medienAuflisterWerkzeug
             .getSelectedMedien();
         Kunde selectedKunde = _kundenAuflisterWerkzeug.getSelectedKunde();
-        // TODO für Aufgabenblatt 6 (nicht löschen): Vormerken einbauen
+        try
+        {
+            _verleihService.vormerkenAn(selectedKunde, selectedMedien);
+        }
+        catch (ProtokollierException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 

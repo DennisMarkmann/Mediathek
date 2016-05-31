@@ -17,10 +17,10 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.ObservableSubWerkze
 /**
  * Ein AusleiheMedienauflisterWerkzeug ist ein Werkzeug zum auflisten von Medien
  * mit ihren Verleihinformationen.
- * 
+ *
  * Das Werkzeug ist beobachtbar und informiert darüber, wenn sich die Selektion
  * in der Medienliste ändert.
- * 
+ *
  * @author SE2-Team
  * @version SoSe 2016
  */
@@ -33,10 +33,10 @@ public class AusleiheMedienauflisterWerkzeug extends ObservableSubWerkzeug
     /**
      * Initialisiert ein neues AusleiheMedienauflisterWerkzeug. Es wird die
      * Benutzungsoberfläche zum Darstellen der Medien erzeugt.
-     * 
+     *
      * @param medienbestand Der Medienbestand.
      * @param verleihService Der Verleih-Service.
-     * 
+     *
      * @require medienbestand != null
      * @require verleihService != null
      */
@@ -63,35 +63,39 @@ public class AusleiheMedienauflisterWerkzeug extends ObservableSubWerkzeug
     }
 
     /**
-     * Registriert die Aktionen, die bei bestimmten UI-Events ausgeführt werden.
+     * Gibt die Liste der vom Benutzer selektierten Medien zurück.
+     *
+     * @return Die Liste der vom Benutzer selektierten Medien.
+     *
+     * @ensure result != null
      */
-    private void registriereUIAktionen()
+    public List<Medium> getSelectedMedien()
     {
-        registriereMedienAnzeigenAktion();
+        List<Medium> result = new ArrayList<Medium>();
+        int[] selectedRows = _ui.getMedienAuflisterTable()
+            .getSelectedRows();
+        AusleiheMedienTableModel ausleiheMedienTableModel = _ui
+            .getMedienAuflisterTableModel();
+        for (int zeile : selectedRows)
+        {
+            if (ausleiheMedienTableModel.zeileExistiert(zeile))
+            {
+                Medium medium = ausleiheMedienTableModel
+                    .getMediumFuerZeile(zeile);
+                result.add(medium);
+            }
+        }
+        return result;
     }
 
     /**
-     * Holt und setzt die Medieninformationen.
+     * Gibt das Panel dieses Subwerkzeugs zurück.
+     *
+     * @ensure result != null
      */
-    private void setzeAnzuzeigendeMedien()
+    public JPanel getUIPanel()
     {
-        List<Medium> medienListe = _medienbestand.getMedien();
-        List<AusleiheMedienFormatierer> medienFormatierer = new ArrayList<AusleiheMedienFormatierer>();
-        for (Medium medium : medienListe)
-        {
-            boolean istVerliehen = _verleihService.istVerliehen(medium);
-            // TODO für Aufgabenblatt 6 (nicht löschen): Falls ein Vormerker für
-            // ein Medium existiert, muss dieser hier ermittelt werden.
-            // Ist dies korrekt implementiert, erscheint in der Ausleiheansicht
-            // der Name des Vormerkers, an den ein Medium ausgeliehen werden
-            // darf, gemäß Anforderung d).
-            Kunde ersterVormerker = null;
-
-            medienFormatierer.add(new AusleiheMedienFormatierer(medium,
-                    istVerliehen, ersterVormerker));
-        }
-        _ui.getMedienAuflisterTableModel()
-            .setMedien(medienFormatierer);
+        return _ui.getUIPanel();
     }
 
     /**
@@ -132,38 +136,31 @@ public class AusleiheMedienauflisterWerkzeug extends ObservableSubWerkzeug
     }
 
     /**
-     * Gibt die Liste der vom Benutzer selektierten Medien zurück.
-     * 
-     * @return Die Liste der vom Benutzer selektierten Medien.
-     * 
-     * @ensure result != null
+     * Registriert die Aktionen, die bei bestimmten UI-Events ausgeführt werden.
      */
-    public List<Medium> getSelectedMedien()
+    private void registriereUIAktionen()
     {
-        List<Medium> result = new ArrayList<Medium>();
-        int[] selectedRows = _ui.getMedienAuflisterTable()
-            .getSelectedRows();
-        AusleiheMedienTableModel ausleiheMedienTableModel = _ui
-            .getMedienAuflisterTableModel();
-        for (int zeile : selectedRows)
-        {
-            if (ausleiheMedienTableModel.zeileExistiert(zeile))
-            {
-                Medium medium = ausleiheMedienTableModel
-                    .getMediumFuerZeile(zeile);
-                result.add(medium);
-            }
-        }
-        return result;
+        registriereMedienAnzeigenAktion();
     }
 
     /**
-     * Gibt das Panel dieses Subwerkzeugs zurück.
-     * 
-     * @ensure result != null
+     * Holt und setzt die Medieninformationen.
      */
-    public JPanel getUIPanel()
+    private void setzeAnzuzeigendeMedien()
     {
-        return _ui.getUIPanel();
+        List<Medium> medienListe = _medienbestand.getMedien();
+        List<AusleiheMedienFormatierer> medienFormatierer = new ArrayList<AusleiheMedienFormatierer>();
+        for (Medium medium : medienListe)
+        {
+            boolean istVerliehen = _verleihService.istVerliehen(medium);
+            Kunde ersterVormerker = _verleihService.getVormerkKarteFuer(medium)
+                .get_vormerkerListe()
+                .peek();
+
+            medienFormatierer.add(new AusleiheMedienFormatierer(medium,
+                    istVerliehen, ersterVormerker));
+        }
+        _ui.getMedienAuflisterTableModel()
+            .setMedien(medienFormatierer);
     }
 }

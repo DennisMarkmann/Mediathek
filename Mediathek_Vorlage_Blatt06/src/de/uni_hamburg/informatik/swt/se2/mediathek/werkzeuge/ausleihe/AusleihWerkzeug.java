@@ -3,6 +3,7 @@ package de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.ausleihe;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,7 +25,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.subwerkzeuge.medien
 /**
  * Ein AusleihWerkzeug stellt die Funktionalität der Ausleihe für die
  * Benutzungsoberfläche bereit. Die UI wird durch die AusleiheUI gestaltet.
- * 
+ *
  * @author SE2-Team
  * @version SoSe 2016
  */
@@ -65,11 +66,11 @@ public class AusleihWerkzeug
      * Initialisiert ein neues AusleihWerkzeug. Es wird die Benutzungsoberfläche
      * mit den Ausleihaktionen erzeugt, Beobachter an den Services registriert
      * und die anzuzeigenden Materialien gesetzt.
-     * 
+     *
      * @param medienbestand Der Medienbestand.
      * @param kundenstamm Der Kundenstamm.
      * @param verleihService Der Verleih-Service.
-     * 
+     *
      * @require medienbestand != null
      * @require kundenstamm != null
      * @require verleihService != null
@@ -107,47 +108,87 @@ public class AusleihWerkzeug
     }
 
     /**
-     * Registriert die Aktionen, die bei benachrichtigungen der Services
-     * ausgeführt werden.
+     * Setzt den Ausleihbutton auf benutzbar (enabled) falls die gerade
+     * selektierten Medien alle ausgeliehen werden können und ein Kunde
+     * ausgewählt ist.
+     *
+     * Wenn keine Medien selektiert sind oder wenn mindestes eines der
+     * selektierten Medien bereits ausgeliehen ist oder wenn kein Kunde
+     * ausgewählt ist, wird der Button ausgegraut.
      */
-    private void registriereServiceBeobachter()
+    private void aktualisiereAusleihButton()
     {
-        registriereAusleihButtonAktualisierenAktion();
+        boolean istAusleihenMoeglich = istAusleihenMoeglich();
+        _ausleiheUI.getAusleihButton()
+            .setEnabled(istAusleihenMoeglich);
     }
 
     /**
-     * Registriert die Aktionen, die bei bestimmten Änderungen in Subwerkzeugen
-     * ausgeführt werden.
+     * Gibt das Panel, dass die UI-Komponente darstellt zurück.
+     *
+     * @return Das Panel, dass die UI-Komponente darstellt.
+     *
+     * @ensure result != null
      */
-    private void registriereSubWerkzeugBeobachter()
+    public JPanel getUIPanel()
     {
-        registriereKundenAnzeigenAktion();
-        registriereMedienAnzeigenAktion();
+        return _ausleiheUI.getUIPanel();
     }
 
     /**
-     * Registriert die Aktionen, die bei bestimmten UI-Events ausgeführt werden.
+     * Überprüft, ob die selektierten Medien ausgeleihen werden können und ob
+     * ein Kunde selektiert ist, an den ausgeliehen werden könnte.
+     *
+     * @return true, wenn ausleihen möglich ist, sonst false.
      */
-    private void registriereUIAktionen()
+    private boolean istAusleihenMoeglich()
     {
-        registriereAusleihAktion();
-    }
-
-    /**
-     * Registriert die Aktion zur Aktualisierung des Ausleihbuttons, wenn eine
-     * Benachrichtigung vom Verleihservice auftaucht.
-     */
-    private void registriereAusleihButtonAktualisierenAktion()
-    {
-        _verleihService.registriereBeobachter(new ServiceObserver()
+        List<Medium> medien = _medienAuflisterWerkzeug.getSelectedMedien();
+        Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
+        boolean ausleiheMoeglich = false;
+        for (Medium medium : medien)
         {
-
-            @Override
-            public void reagiereAufAenderung()
+            ArrayBlockingQueue<Kunde> vormerkListe = _verleihService
+                .getVormerkKarteFuer(medium)
+                .get_vormerkerListe();
+            if (vormerkListe == null)
             {
-                aktualisiereAusleihButton();
+                ausleiheMoeglich = true;
             }
-        });
+            else if (vormerkListe.peek()
+                .equals(kunde))
+            {
+                ausleiheMoeglich = true;
+            }
+        }
+        if (ausleiheMoeglich)
+        {
+            ausleiheMoeglich = (kunde != null) && !medien.isEmpty()
+                    && _verleihService.sindAlleNichtVerliehen(medien);
+        }
+
+        return ausleiheMoeglich;
+    }
+
+    /**
+     * Leiht die ausgewählten Medien aus. Diese Methode wird über einen Listener
+     * angestoßen, der reagiert, wenn der Benutzer den Ausleihen-Button drückt.
+     */
+    private void leiheAusgewaehlteMedienAus()
+    {
+        List<Medium> selectedMedien = _medienAuflisterWerkzeug
+            .getSelectedMedien();
+        Kunde selectedKunde = _kundenAuflisterWerkzeug.getSelectedKunde();
+        try
+        {
+            Datum heute = Datum.heute();
+            _verleihService.verleiheAn(selectedKunde, selectedMedien, heute);
+        }
+        catch (ProtokollierException exception)
+        {
+            JOptionPane.showMessageDialog(null, exception.getMessage(),
+                    "Fehlermeldung", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -165,6 +206,23 @@ public class AusleihWerkzeug
                     leiheAusgewaehlteMedienAus();
                 }
             });
+    }
+
+    /**
+     * Registriert die Aktion zur Aktualisierung des Ausleihbuttons, wenn eine
+     * Benachrichtigung vom Verleihservice auftaucht.
+     */
+    private void registriereAusleihButtonAktualisierenAktion()
+    {
+        _verleihService.registriereBeobachter(new ServiceObserver()
+        {
+
+            @Override
+            public void reagiereAufAenderung()
+            {
+                aktualisiereAusleihButton();
+            }
+        });
     }
 
     /**
@@ -203,43 +261,30 @@ public class AusleihWerkzeug
     }
 
     /**
-     * Überprüft, ob die selektierten Medien ausgeleihen werden können und ob
-     * ein Kunde selektiert ist, an den ausgeliehen werden könnte.
-     * 
-     * @return true, wenn ausleihen möglich ist, sonst false.
+     * Registriert die Aktionen, die bei benachrichtigungen der Services
+     * ausgeführt werden.
      */
-    private boolean istAusleihenMoeglich()
+    private void registriereServiceBeobachter()
     {
-        List<Medium> medien = _medienAuflisterWerkzeug.getSelectedMedien();
-        Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
-        // TODO für Aufgabenblatt 6 (nicht löschen): So ändern, dass vorgemerkte
-        // Medien nur vom ersten Vormerker ausgeliehen werden können, gemäß
-        // Anforderung d).
-        boolean ausleiheMoeglich = (kunde != null) && !medien.isEmpty()
-                && _verleihService.sindAlleNichtVerliehen(medien);
-
-        return ausleiheMoeglich;
+        registriereAusleihButtonAktualisierenAktion();
     }
 
     /**
-     * Leiht die ausgewählten Medien aus. Diese Methode wird über einen Listener
-     * angestoßen, der reagiert, wenn der Benutzer den Ausleihen-Button drückt.
+     * Registriert die Aktionen, die bei bestimmten Änderungen in Subwerkzeugen
+     * ausgeführt werden.
      */
-    private void leiheAusgewaehlteMedienAus()
+    private void registriereSubWerkzeugBeobachter()
     {
-        List<Medium> selectedMedien = _medienAuflisterWerkzeug
-            .getSelectedMedien();
-        Kunde selectedKunde = _kundenAuflisterWerkzeug.getSelectedKunde();
-        try
-        {
-            Datum heute = Datum.heute();
-            _verleihService.verleiheAn(selectedKunde, selectedMedien, heute);
-        }
-        catch (ProtokollierException exception)
-        {
-            JOptionPane.showMessageDialog(null, exception.getMessage(),
-                    "Fehlermeldung", JOptionPane.ERROR_MESSAGE);
-        }
+        registriereKundenAnzeigenAktion();
+        registriereMedienAnzeigenAktion();
+    }
+
+    /**
+     * Registriert die Aktionen, die bei bestimmten UI-Events ausgeführt werden.
+     */
+    private void registriereUIAktionen()
+    {
+        registriereAusleihAktion();
     }
 
     /**
@@ -259,33 +304,5 @@ public class AusleihWerkzeug
     {
         Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
         _kundenDetailAnzeigerWerkzeug.setKunde(kunde);
-    }
-
-    /**
-     * Setzt den Ausleihbutton auf benutzbar (enabled) falls die gerade
-     * selektierten Medien alle ausgeliehen werden können und ein Kunde
-     * ausgewählt ist.
-     * 
-     * Wenn keine Medien selektiert sind oder wenn mindestes eines der
-     * selektierten Medien bereits ausgeliehen ist oder wenn kein Kunde
-     * ausgewählt ist, wird der Button ausgegraut.
-     */
-    private void aktualisiereAusleihButton()
-    {
-        boolean istAusleihenMoeglich = istAusleihenMoeglich();
-        _ausleiheUI.getAusleihButton()
-            .setEnabled(istAusleihenMoeglich);
-    }
-
-    /**
-     * Gibt das Panel, dass die UI-Komponente darstellt zurück.
-     * 
-     * @return Das Panel, dass die UI-Komponente darstellt.
-     * 
-     * @ensure result != null
-     */
-    public JPanel getUIPanel()
-    {
-        return _ausleiheUI.getUIPanel();
     }
 }
