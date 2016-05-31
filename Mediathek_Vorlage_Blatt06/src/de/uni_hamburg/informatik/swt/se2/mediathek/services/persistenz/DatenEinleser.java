@@ -47,12 +47,6 @@ public class DatenEinleser
     private List<Verleihkarte> _verleihkarten;
 
     /**
-     * Die eingelesenen Vormerkkarten, ist null wenn noch nicht eingelesen
-     * wurde.
-     */
-    private List<Verleihkarte> _vormerkkarten;
-
-    /**
      * Initialisiert einen neuen DatenEinleser, der aus den angebenen Dateien
      * einliest.
      *
