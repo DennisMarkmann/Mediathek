@@ -192,7 +192,7 @@ public class VormerkWerkzeug
 
     }
 
-    public void merkeVor(Medium medium, Kunde vormerker)
+    public void merkeVor(Medium medium, Kunde vormerker) throws VormerkException
     {
         VormerkKarte vormerkKarte = new VormerkKarte(medium, vormerker);
         _vormerkkarten.put(medium, vormerkKarte);

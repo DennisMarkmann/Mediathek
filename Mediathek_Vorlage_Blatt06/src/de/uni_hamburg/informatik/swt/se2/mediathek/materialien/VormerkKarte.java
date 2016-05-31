@@ -1,4 +1,5 @@
 package de.uni_hamburg.informatik.swt.se2.mediathek.materialien;
+import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -25,18 +26,26 @@ public class VormerkKarte
      * @param das zur Vormerkkarte gehörige Medium.
      *
      */
-    public VormerkKarte(Medium medium, Kunde kunde)
+    public VormerkKarte(Medium medium, Kunde kunde) 
     {
         _medium = medium;
         _vormerkerListe = new ArrayBlockingQueue<Kunde>(3);
-        this.addVormerker(kunde);
+        try
+        {
+            this.addVormerker(kunde);
+        }
+        catch(VormerkException e)
+        {
+            System.out.println("Erstellen der Liste fehlgeschlagen");
+        }
     }
 
     /**
      * Hinzufügen eines Vormerkers nach dem FIFO-Prinzip.
      * @param
+     * @throws VormerkException 
      */
-    public void addVormerker(Kunde vormerker)
+    public void addVormerker(Kunde vormerker) throws VormerkException
     {
         try
         {
@@ -46,6 +55,9 @@ public class VormerkKarte
         {
             System.out.println("ERROR");
             //TODO Error handling.
+            VormerkException ex = new VormerkException("Vormerken fehlgeschlagen: Liste voll!");
+            throw ex;
+            
         }
     }
 
