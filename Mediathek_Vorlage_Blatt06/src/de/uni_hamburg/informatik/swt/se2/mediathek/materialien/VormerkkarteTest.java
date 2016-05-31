@@ -39,14 +39,16 @@ public class VormerkkarteTest
     
     public void TESTEaddVormerker()
     {
-        TEST_Vormerkkarte.addVormerker(kunde1);
+
         TEST_vormerkerListe = TEST_Vormerkkarte.get_vormerkerListe();
         assertEquals(kunde1,TEST_vormerkerListe.peek());
     }
     
     public void TESTEverleiheAnVormerker()
     {
+        TEST_Vormerkkarte.addVormerker(kunde2);
         TEST_Vormerkkarte.verleiheAnVormerker();
-        
+        TEST_vormerkerListe = TEST_Vormerkkarte.get_vormerkerListe();
+        assertEquals(kunde2,TEST_vormerkerListe.peek());               
     }
 }
