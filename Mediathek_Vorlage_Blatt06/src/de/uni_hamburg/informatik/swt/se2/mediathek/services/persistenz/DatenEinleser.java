@@ -52,7 +52,6 @@ public class DatenEinleser
      *
      * @param medienDatei Die Datei in der die Medien gespeichert sind.
      * @param kundenDatei Die Datei in der die Kunden gespeichert sind.
-     * @param vormerkDatei
      *
      * @require medienDatei != null
      * @require kundenDatei != null
