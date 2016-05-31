@@ -13,6 +13,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.AbstractObservableService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.kundenstamm.KundenstammService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.medienbestand.MedienbestandService;
+import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
 
 /**
  * Diese Klasse implementiert das Interface VerleihService. Siehe dortiger
@@ -46,7 +47,7 @@ public class VerleihServiceImpl extends AbstractObservableService
      */
     private VerleihProtokollierer _protokollierer;
 
-    private Map<Medium, VormerkKarte> _vormerkKarten;
+    private Map<Medium, VormerkKarte> _vormerkKarten = new HashMap <Medium, VormerkKarte>();
 
     /**
      * Konstruktor. Erzeugt einen neuen VerleihServiceImpl.
@@ -327,16 +328,25 @@ public class VerleihServiceImpl extends AbstractObservableService
 
         for (Medium medium : medien)
         {
-            VormerkKarte vormerkKarte = new VormerkKarte(medium, kunde);
-
-            _vormerkKarten.put(medium, vormerkKarte);
-            _protokollierer.protokolliere(
-                    VerleihProtokollierer.EREIGNIS_AUSLEIHE, vormerkKarte);
+            VormerkKarte vormerkKarte = sucheVormerkKarte(medium);
+            if (vormerkKarte == null){
+                vormerkKarte = new VormerkKarte(medium, kunde);
+                _vormerkKarten.put(medium, vormerkKarte);
+            }else{
+                try {
+                    vormerkKarte.addVormerker(kunde);
+                } catch (VormerkException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         // XXX Was passiert wenn das Protokollieren mitten in der Schleife
         // schief geht? informiereUeberAenderung in einen finally Block?
         informiereUeberAenderung();
 
+    }
+    private VormerkKarte sucheVormerkKarte(Medium medium){
+        return _vormerkKarten.get(medium);
     }
 
 }

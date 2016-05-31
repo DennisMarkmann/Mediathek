@@ -157,8 +157,9 @@ public class VormerkWerkzeug
 
             VormerkKarte vormerkKarte = _verleihService
                 .getVormerkKarteFuer(medium);
-            if (vormerkKarte != null && 3 >= vormerkKarte.get_vormerkerListe()
+            if (vormerkKarte != null && 3 <= vormerkKarte.get_vormerkerListe()
                 .size())
+                //TODO add Pruefung ob bereits an den Kunden verliehen / Kunde bereits eine Vormerkung besitzt
             {
                 vormerkBar = false;
             }
@@ -176,7 +177,6 @@ public class VormerkWerkzeug
     private void merkeAusgewaehlteMedienVor()
     {
 
-        //TODO doesnt work
         List<Medium> selectedMedien = _medienAuflisterWerkzeug
             .getSelectedMedien();
         Kunde selectedKunde = _kundenAuflisterWerkzeug.getSelectedKunde();
@@ -194,10 +194,20 @@ public class VormerkWerkzeug
 
     public void merkeVor(Medium medium, Kunde vormerker) throws VormerkException
     {
-        VormerkKarte vormerkKarte = new VormerkKarte(medium, vormerker);
-        _vormerkkarten.put(medium, vormerkKarte);
+        
+        VormerkKarte vormerkKarte = sucheVormerkKarte(medium);
+        if (vormerkKarte == null){
+            vormerkKarte = new VormerkKarte(medium, vormerker);
+            _vormerkkarten.put(medium, vormerkKarte);
+        }else{
+            vormerkKarte.addVormerker(vormerker);
+        }
     }
 
+    private VormerkKarte sucheVormerkKarte(Medium medium){
+        return _vormerkkarten.get(medium);
+    }
+    
     /**
      * Registiert die Aktion, die ausgeführt wird, wenn ein Kunde ausgewählt
      * wird.
