@@ -130,7 +130,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         try {
             vormerkKarte = _vormerkKarten.get(medium);
         } catch (NullPointerException e) {
-            // TODO fix this dirty code
+            // TODO Cleanup Code
         }
         return vormerkKarte;
     }

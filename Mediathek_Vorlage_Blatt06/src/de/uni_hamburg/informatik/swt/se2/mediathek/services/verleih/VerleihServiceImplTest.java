@@ -33,6 +33,8 @@ public class VerleihServiceImplTest
     private List<Medium> _medienListe;
     private Kunde _vormerkkunde;
 
+    //TODO AddTests
+    
     public VerleihServiceImplTest()
     {
         _datum = new Datum(3, 4, 2009);

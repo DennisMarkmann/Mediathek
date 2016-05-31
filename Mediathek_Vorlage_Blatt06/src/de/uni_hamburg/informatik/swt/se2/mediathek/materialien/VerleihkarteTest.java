@@ -21,6 +21,8 @@ public class VerleihkarteTest
     private Kunde _kunde;
     private Medium _medium;
 
+    //TODO AddTests
+    
     public VerleihkarteTest()
     {
         _kunde = new Kunde(new Kundennummer(123456), "ich", "du");

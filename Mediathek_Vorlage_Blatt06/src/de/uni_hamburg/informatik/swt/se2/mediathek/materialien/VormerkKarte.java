@@ -50,7 +50,7 @@ public class VormerkKarte {
             _vormerkerListe.put(vormerker);
         } catch (IllegalStateException | InterruptedException e) {
             System.out.println("ERROR");
-            // TODO Error handling.
+            // TODO Exception handling
             VormerkException ex = new VormerkException("Vormerken fehlgeschlagen: Liste voll!");
             throw ex;
 
@@ -100,7 +100,6 @@ public class VormerkKarte {
     }
 
     public boolean istVerliehenAnKunden(Kunde kunde) {
-        //TODO check / fix
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         for (int i = 0; i < 3; i++) {
                 if (iterator.hasNext() && iterator.next().equals(kunde)) {

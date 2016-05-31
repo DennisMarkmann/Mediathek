@@ -166,7 +166,7 @@ public class VormerkWerkzeug {
         try {
             _verleihService.vormerkenAn(selectedKunde, selectedMedien);
         } catch (ProtokollierException e) {
-            // TODO Auto-generated catch block
+            // TODO Exception handling
             e.printStackTrace();
         }
 
