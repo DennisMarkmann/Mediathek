@@ -26,11 +26,18 @@ public class VormerkKarte
      * @param das zur Vormerkkarte gehörige Medium.
      *
      */
-    public VormerkKarte(Medium medium, Kunde kunde) throws VormerkException
+    public VormerkKarte(Medium medium, Kunde kunde) 
     {
         _medium = medium;
         _vormerkerListe = new ArrayBlockingQueue<Kunde>(3);
-        this.addVormerker(kunde);
+        try
+        {
+            this.addVormerker(kunde);
+        }
+        catch(VormerkException e)
+        {
+            System.out.println("Erstellen der Liste fehlgeschlagen");
+        }
     }
 
     /**
@@ -48,7 +55,7 @@ public class VormerkKarte
         {
             System.out.println("ERROR");
             //TODO Error handling.
-            VormerkException ex = new VormerkException("Vormerken fehlgeschlagen");
+            VormerkException ex = new VormerkException("Vormerken fehlgeschlagen: Liste voll!");
             throw ex;
             
         }

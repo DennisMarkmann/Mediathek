@@ -1,6 +1,8 @@
 package de.uni_hamburg.informatik.swt.se2.mediathek.materialien;
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Kundennummer;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
+import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -46,7 +48,14 @@ public class VormerkkarteTest
     
     public void TESTEverleiheAnVormerker()
     {
-        TEST_Vormerkkarte.addVormerker(kunde2);
+        try
+        {
+            TEST_Vormerkkarte.addVormerker(kunde2);
+        }
+        catch(VormerkException e)
+        {
+            //Testing
+        }
         TEST_Vormerkkarte.verleiheAnVormerker();
         TEST_vormerkerListe = TEST_Vormerkkarte.get_vormerkerListe();
         assertEquals(kunde2,TEST_vormerkerListe.peek());               
