@@ -1,16 +1,15 @@
 package de.uni_hamburg.informatik.swt.se2.mediathek.materialien;
 
-import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
+import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
 
 /**
  * Vormerkkarte als Material für Vormerkungen in der Mediathek
- * 
+ *
  * @Author SE2 4er-Team
  * @Date 25/05/2016
  *
@@ -24,7 +23,7 @@ public class VormerkKarte {
      *
      * Konstruktor für die Vormerkkarte Erstellen einer Queue mit der Kapazität von 3. Nur 3 Kunden können gleichzeitig
      * vormerken.
-     * 
+     *
      * @param kunde
      * @param das zur Vormerkkarte gehörige Medium.
      *
@@ -41,7 +40,7 @@ public class VormerkKarte {
 
     /**
      * Hinzufügen eines Vormerkers nach dem FIFO-Prinzip.
-     * 
+     *
      * @param
      * @throws VormerkException
      */
@@ -57,6 +56,10 @@ public class VormerkKarte {
         }
     }
 
+    public boolean equalsErsterVormerker(Kunde kunde) {
+        return this.get_vormerkerListe().peek().equals(kunde);
+    }
+
     public Medium get_medium() {
         return _medium;
     }
@@ -65,25 +68,8 @@ public class VormerkKarte {
         return _vormerkerListe;
     }
 
-    public void set_vormerkerListe(ArrayBlockingQueue<Kunde> _vormerkerListe) {
-        this._vormerkerListe = _vormerkerListe;
-    }
-
-    /**
-     * Gibt und entfernt den Vormerker an Index:1.
-     */
-    public void verleiheAnVormerker() {
-        _vormerkerListe.poll();
-    }
-
-    // unused
-    public Kunde gibKundeFuerIndex(int index) {
-        Iterator<Kunde> iterator = _vormerkerListe.iterator();
-        Kunde kunde = null;
-        for (int i = 0; i < index; i++) {
-            kunde = iterator.next();
-        }
-        return kunde;
+    public String getFormatiertenString() {
+        return "Kunde: \"" + _vormerkerListe.peek() + "\" Medium: \"" + _medium + "\"";
     }
 
     public ArrayList<Kunde> gibAlleKunden() {
@@ -99,25 +85,42 @@ public class VormerkKarte {
         return kunden;
     }
 
+    // unused
+    public Kunde gibKundeFuerIndex(int index) {
+        Iterator<Kunde> iterator = _vormerkerListe.iterator();
+        Kunde kunde = null;
+        for (int i = 0; i < index; i++) {
+            kunde = iterator.next();
+        }
+        return kunde;
+    }
+
+    public boolean istKomplettVorgemerkt() {
+        return 3 <= this.get_vormerkerListe().size();
+    }
+
+    public boolean istListeEmpty() {
+        return 0 == this.get_vormerkerListe().size();
+    }
+
     public boolean istVerliehenAnKunden(Kunde kunde) {
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         for (int i = 0; i < 3; i++) {
-                if (iterator.hasNext() && iterator.next().equals(kunde)) {
-                    return true;
-                }
+            if (iterator.hasNext() && iterator.next().equals(kunde)) {
+                return true;
+            }
         }
         return false;
     }
-    
-    public boolean istKomplettVorgemerkt(){
-        return 3 <= this.get_vormerkerListe().size();
+
+    public void set_vormerkerListe(ArrayBlockingQueue<Kunde> _vormerkerListe) {
+        this._vormerkerListe = _vormerkerListe;
     }
-    
-    public boolean istListeEmpty(){
-        return 0 == this.get_vormerkerListe().size();
-    }
-    
-    public boolean equalsErsterVormerker(Kunde kunde){
-       return this.get_vormerkerListe().peek().equals(kunde);
+
+    /**
+     * Gibt und entfernt den Vormerker an Index:1.
+     */
+    public void verleiheAnVormerker() {
+        _vormerkerListe.poll();
     }
 }
