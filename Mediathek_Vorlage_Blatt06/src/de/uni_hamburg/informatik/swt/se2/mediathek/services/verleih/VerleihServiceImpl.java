@@ -272,16 +272,20 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         assert ausleihDatum != null : "Vorbedingung verletzt: ausleihDatum != null";
         assert istVerleihenMoeglich(kunde, medien) : "Vorbedingung verletzt:  istVerleihenMoeglich(kunde, medien)";
 
-        for (Medium medium : medien) {
-            Verleihkarte verleihkarte = new Verleihkarte(kunde, medium, ausleihDatum);
+        try {
+            for (Medium medium : medien) {
+                Verleihkarte verleihkarte = new Verleihkarte(kunde, medium, ausleihDatum);
 
-            _verleihkarten.put(medium, verleihkarte);
-            _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_AUSLEIHE, verleihkarte);
-            entferneVormerkKarte(medium, kunde);
+                _verleihkarten.put(medium, verleihkarte);
+                _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_AUSLEIHE, verleihkarte);
+                entferneVormerkKarte(medium, kunde);
+            }
+        } catch (ProtokollierException pe) {
+            // TODO Display Info to the user? --> Exception to GUI
+        } finally {
+            // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
+            informiereUeberAenderung();
         }
-        // XXX Was passiert wenn das Protokollieren mitten in der Schleife
-        // schief geht? informiereUeberAenderung in einen finally Block?
-        informiereUeberAenderung();
     }
 
     @Override
@@ -301,12 +305,13 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                     _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_VORMERKUNG, vormerkKarte);
                 } catch (VormerkException e) {
                     e.printStackTrace();
+                } catch (ProtokollierException pe) {
+                    // TODO Display Info to the user? --> Exception to GUI
+                } finally {
+                    // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
+                    informiereUeberAenderung();
                 }
             }
         }
-        // XXX Was passiert wenn das Protokollieren mitten in der Schleife
-        // schief geht? informiereUeberAenderung in einen finally Block?
-        informiereUeberAenderung();
-
     }
 }
