@@ -45,6 +45,10 @@ public class VormerkKarte {
      * @throws VormerkException
      */
     public void addVormerker(Kunde vormerker) throws VormerkException {
+        if (istVerliehenAnKunden(vormerker)) {
+            return;
+        }
+
         try {
             _vormerkerListe.put(vormerker);
         } catch (IllegalStateException | InterruptedException e) {
