@@ -72,9 +72,9 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
 
     private void entferneVormerkKarte(Medium medium, Kunde kunde) throws ProtokollierException {
         VormerkKarte vormerkKarte = this.getVormerkKarteFuer(medium);
-        if (vormerkKarte.gibKundeFuerIndex(1).equals(kunde)) {
-            vormerkKarte.verleiheAnVormerker();
+        if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(1).equals(kunde)) {
             _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_ENTFERNUNG, vormerkKarte);
+            vormerkKarte.verleiheAnVormerker();
         }
     }
 
@@ -295,22 +295,23 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
 
         for (Medium medium : medien) {
             VormerkKarte vormerkKarte = sucheVormerkKarte(medium);
-            if (vormerkKarte == null) {
-                vormerkKarte = new VormerkKarte(medium, kunde);
-                _vormerkKarten.put(medium, vormerkKarte);
-                _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_VORMERKUNG, vormerkKarte);
-            } else {
-                try {
+            try {
+                if (vormerkKarte == null) {
+                    vormerkKarte = new VormerkKarte(medium, kunde);
+                    _vormerkKarten.put(medium, vormerkKarte);
+                    _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_VORMERKUNG, vormerkKarte);
+                } else {
+
                     vormerkKarte.addVormerker(kunde);
                     _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_VORMERKUNG, vormerkKarte);
-                } catch (VormerkException e) {
-                    e.printStackTrace();
-                } catch (ProtokollierException pe) {
-                    // TODO Display Info to the user? --> Exception to GUI
-                } finally {
-                    // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
-                    informiereUeberAenderung();
                 }
+            } catch (VormerkException e) {
+                e.printStackTrace();
+            } catch (ProtokollierException pe) {
+                // TODO Display Info to the user? --> Exception to GUI
+            } finally {
+                // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
+                informiereUeberAenderung();
             }
         }
     }

@@ -143,17 +143,15 @@ public class VormerkWerkzeug {
             vormerkBar = !_verleihService.istVerliehenAn(kunde, medium);
 
             VormerkKarte vormerkKarte = _verleihService.getVormerkKarteFuer(medium);
-            if (vormerkKarte != null && (vormerkKarte.istKomplettVorgemerkt() || vormerkKarte.istVerliehenAnKunden(kunde)
-                    || _verleihService.hatKundeMediumAusgeliehen(kunde, medium)))
-            {
-                vormerkBar = false;
+            if (!vormerkBar || vormerkKarte != null && (vormerkKarte.istKomplettVorgemerkt()
+                    || vormerkKarte.istVerliehenAnKunden(kunde) || _verleihService.hatKundeMediumAusgeliehen(kunde, medium))) {
+                return false;
             }
 
         }
 
-        return vormerkBar;
+        return true;
     }
-
 
     /**
      * Merkt die ausgewählten Medien für einen Kunden vor. Diese Methode wird über einen Listener angestoßen, der reagiert, wenn
@@ -181,10 +179,6 @@ public class VormerkWerkzeug {
         } else {
             vormerkKarte.addVormerker(vormerker);
         }
-    }
-
-    private VormerkKarte sucheVormerkKarte(Medium medium) {
-        return _vormerkkarten.get(medium);
     }
 
     /**
@@ -261,6 +255,10 @@ public class VormerkWerkzeug {
                 aktualisiereVormerkButton();
             }
         });
+    }
+
+    private VormerkKarte sucheVormerkKarte(Medium medium) {
+        return _vormerkkarten.get(medium);
     }
 
     /**
