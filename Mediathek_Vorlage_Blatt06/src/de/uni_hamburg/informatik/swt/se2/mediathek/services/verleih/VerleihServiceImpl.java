@@ -75,6 +75,9 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(1).equals(kunde)) {
             _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_ENTFERNUNG, vormerkKarte);
             vormerkKarte.verleiheAnVormerker();
+            if (vormerkKarte.get_vormerkerListe().size() == 0){
+                _vormerkKarten.remove(vormerkKarte);
+            }
         }
     }
 
