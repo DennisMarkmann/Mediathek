@@ -72,6 +72,7 @@ public class VormerkKarte {
     }
 
     /**
+     * Gibt das medium zurück, zu dem diese Vormerkung gehört.
      * 
      * @return mediun zu dem die Vormerkungen gespeichert werden sollen.
      */
@@ -80,9 +81,11 @@ public class VormerkKarte {
     }
 
     /**
+     * Gibt die Vormerkliste zurück.
      * 
-     * @return
-     */
+     * @return vormerkliste in der die Vormerkungen stehen.
+     * 
+     **/
     
     public ArrayBlockingQueue<Kunde> get_vormerkerListe() {
         return _vormerkerListe;

@@ -92,9 +92,12 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
             }
         }
     }
-
+    
     /**
      * Erzeugt eine neue HashMap aus dem Initialbestand.
+     * 
+     * @param initialBestand der fuer die Verleihkarten verwendet werden soll.
+     * @return HashMap<Medium, Verleihkarte> verleihkarten fuer die Bestand erzeugt werden soll.
      */
     private HashMap<Medium, Verleihkarte> erzeugeVerleihkartenBestand(List<Verleihkarte> initialBestand) {
         HashMap<Medium, Verleihkarte> result = new HashMap<Medium, Verleihkarte>();
@@ -144,6 +147,13 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         }
         return result;
     }
+
+    /**
+     * Gibt die VormerkKarte für das Medium.
+     * 
+     * @param medium Medium fuer das eine Vormerkkarte gesucht werden soll.
+     * @return VormerkKarte die zu dem Medium gefunden wurde.
+     */
 
     @Override
     public VormerkKarte getVormerkKarteFuer(Medium medium) {
@@ -269,10 +279,6 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         return result;
     }
 
-    private VormerkKarte sucheVormerkKarte(Medium medium) {
-        return _vormerkKarten.get(medium);
-    }
-
     @Override
     public void verleiheAn(Kunde kunde, List<Medium> medien, Datum ausleihDatum) throws ProtokollierException {
         assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
@@ -295,13 +301,20 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         }
     }
 
+    /**
+     * Setzt eine Vormerkung von einem Kunden an ein Medium.
+     * 
+     * @param kunde für den die medien vorgemerkt werden sollen.
+     * @param medien die für den Kunden vorgemerkt werden sollen.
+     */
+
     @Override
     public void vormerkenAn(Kunde kunde, List<Medium> medien) throws ProtokollierException, VormerkException {
 
         assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 
         for (Medium medium : medien) {
-            VormerkKarte vormerkKarte = sucheVormerkKarte(medium);
+            VormerkKarte vormerkKarte = getVormerkKarteFuer(medium);
             try {
                 if (vormerkKarte == null) {
                     vormerkKarte = new VormerkKarte(medium, kunde);
