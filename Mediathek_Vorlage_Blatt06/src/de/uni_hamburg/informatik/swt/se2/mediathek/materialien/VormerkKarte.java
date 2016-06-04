@@ -26,16 +26,13 @@ public class VormerkKarte {
      *
      * @param kunde
      * @param das zur Vormerkkarte gehörige Medium.
+     * @throws VormerkException
      *
      */
-    public VormerkKarte(Medium medium, Kunde kunde) {
+    public VormerkKarte(Medium medium, Kunde kunde) throws VormerkException {
         _medium = medium;
         _vormerkerListe = new ArrayBlockingQueue<Kunde>(3);
-        try {
-            this.addVormerker(kunde);
-        } catch (VormerkException e) {
-            System.out.println("Erstellen der Liste fehlgeschlagen");
-        }
+        this.addVormerker(kunde);
     }
 
     /**
@@ -45,18 +42,14 @@ public class VormerkKarte {
      * @throws VormerkException
      */
     public void addVormerker(Kunde vormerker) throws VormerkException {
-        if (istVerliehenAnKunden(vormerker)) {
+        if (istVerliehenAnKunden(vormerker) || _vormerkerListe.size() >= 3) {
             return;
         }
 
         try {
             _vormerkerListe.put(vormerker);
         } catch (IllegalStateException | InterruptedException e) {
-            System.out.println("ERROR");
-            // TODO Exception handling
-            VormerkException ex = new VormerkException("Vormerken fehlgeschlagen: Liste voll!");
-            throw ex;
-
+            throw new VormerkException("Vormerken fehlgeschlagen");
         }
     }
 

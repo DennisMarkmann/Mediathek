@@ -11,16 +11,16 @@ import org.junit.Test;
 
 public class VormerkkarteTest {
 
-    ArrayBlockingQueue<Kunde> vormerkerListe;
-    Kunde _kunde1;
-    Kunde _kunde2;
-    Kunde _kunde3;
-    Kunde _kunde4;
-    Medium _medium;
-    VormerkKarte _vormerkkarte;
+    private ArrayBlockingQueue<Kunde> vormerkerListe;
+    private Kunde _kunde1;
+    private Kunde _kunde2;
+    private Kunde _kunde3;
+    private Kunde _kunde4;
+    private Medium _medium;
+    private VormerkKarte _vormerkkarte;
 
     @Before
-    public void generateTestDate() {
+    public void generateTestDate() throws VormerkException {
         _kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
         _kunde2 = new Kunde(new Kundennummer(123452), "ich2", "du2");
         _kunde3 = new Kunde(new Kundennummer(123453), "ich3", "du3");
@@ -45,7 +45,7 @@ public class VormerkkarteTest {
         try {
             _vormerkkarte.addVormerker(_kunde2);
         } catch (VormerkException e) {
-            // Testing
+            // TODO Exception handling
         }
         _vormerkkarte.verleiheAnVormerker();
         vormerkerListe = _vormerkkarte.get_vormerkerListe();

@@ -75,7 +75,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(1).equals(kunde)) {
             _protokollierer.protokolliere(VerleihProtokollierer.VormerkEreignis.ENTFERNUNG, vormerkKarte);
             vormerkKarte.verleiheAnVormerker();
-            if (vormerkKarte.get_vormerkerListe().size() == 0){
+            if (vormerkKarte.get_vormerkerListe().size() == 0) {
                 _vormerkKarten.remove(vormerkKarte);
             }
         }
@@ -137,13 +137,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
     @Override
     public VormerkKarte getVormerkKarteFuer(Medium medium) {
         assert mediumImBestand(medium) : "Vorbedingung verletzt: medienImBestand(medien)";
-        VormerkKarte vormerkKarte = null;
-        try {
-            vormerkKarte = _vormerkKarten.get(medium);
-        } catch (NullPointerException e) {
-            // TODO Cleanup Code
-        }
-        return vormerkKarte;
+        return _vormerkKarten.get(medium);
     }
 
     @Override
@@ -194,7 +188,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
     @Override
     public boolean medienImBestand(List<Medium> medien) {
         assert medien != null : "Vorbedingung verletzt: medien != null";
-        assert!medien.isEmpty() : "Vorbedingung verletzt: !medien.isEmpty()";
+        assert !medien.isEmpty() : "Vorbedingung verletzt: !medien.isEmpty()";
 
         boolean result = true;
         for (Medium medium : medien) {
@@ -284,7 +278,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                 entferneVormerkKarte(medium, kunde);
             }
         } catch (ProtokollierException pe) {
-            // TODO Display Info to the user? --> Exception to GUI
+            // TODO Exception handling: Display Info to the user? --> Exception to GUI
         } finally {
             // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
             informiereUeberAenderung();
@@ -307,9 +301,9 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                 }
                 _protokollierer.protokolliere(VerleihProtokollierer.VormerkEreignis.VORMERKUNG, vormerkKarte);
             } catch (VormerkException e) {
-                e.printStackTrace();
+                // TODO Exception handling
             } catch (ProtokollierException pe) {
-                // TODO Display Info to the user? --> Exception to GUI
+                // TODO Exception handling: Display Info to the user? --> Exception to GUI
             } finally {
                 // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
                 informiereUeberAenderung();
