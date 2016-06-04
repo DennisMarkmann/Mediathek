@@ -117,8 +117,6 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
 
     @Override
     public Verleihkarte getVerleihkarteFuer(Medium medium) {
-        // TODO delete maybe?
-        // assert istVerliehen(medium) : "Vorbedingung verletzt: istVerliehen(medium)";
         return _verleihkarten.get(medium);
     }
 
