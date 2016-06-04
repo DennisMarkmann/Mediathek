@@ -16,7 +16,14 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkEx
  */
 public class VormerkKarte {
 
+    /**
+     * Das Medium zu dem die Vormerkungen gespeichert werden sollen.
+     */
     private final Medium _medium;
+    
+    /**
+     * Queue in der maximal drei Vormerker gespeichert werden können.
+     */
     private ArrayBlockingQueue<Kunde> _vormerkerListe;
 
     /**
@@ -24,9 +31,9 @@ public class VormerkKarte {
      * Konstruktor für die Vormerkkarte Erstellen einer Queue mit der Kapazität von 3. Nur 3 Kunden können gleichzeitig
      * vormerken.
      *
-     * @param kunde
-     * @param das zur Vormerkkarte gehörige Medium.
-     * @throws VormerkException
+     * @param kunde für den die erste Vormerkung durchgeführt werden soll.
+     * @param medium zu dem die Vormerkungen gespeichert werden sollen.
+     * @throws VormerkException Exception die geworfen wird, sollte beim Hinzufuegen eines Vormerkers etwas schief gehen.
      *
      */
     public VormerkKarte(Medium medium, Kunde kunde) throws VormerkException {
@@ -38,8 +45,8 @@ public class VormerkKarte {
     /**
      * Hinzufügen eines Vormerkers nach dem FIFO-Prinzip.
      *
-     * @param
-     * @throws VormerkException
+     * @param vormerker der in die Liste der vormerker hinzugefuegt werden soll.
+     * @throws VormerkException Exception die geworfen wird, sollte beim Hinzufuegen eines Vormerkers etwas schief gehen.
      */
     public void addVormerker(Kunde vormerker) throws VormerkException {
         if (istVerliehenAnKunden(vormerker) || _vormerkerListe.size() >= 3) {
@@ -53,14 +60,30 @@ public class VormerkKarte {
         }
     }
 
-    public boolean equalsErsterVormerker(Kunde kunde) {
-        return this.get_vormerkerListe().peek().equals(kunde);
+    /**
+     * Pruefung ob erster Eintrag der Liste dem angegebenen
+     * 
+     * @param vormerker fuer den der erste Wert der Liste geprueft werden soll.
+     * @return boolean: true falls Vormerker equals erster Eintrag der Liste, sonst false.
+     */
+    
+    public boolean equalsErsterVormerker(Kunde vormerker) {
+        return this.get_vormerkerListe().peek().equals(vormerker);
     }
 
+    /**
+     * 
+     * @return mediun zu dem die Vormerkungen gespeichert werden sollen.
+     */
     Medium get_medium() {
         return _medium;
     }
 
+    /**
+     * 
+     * @return
+     */
+    
     public ArrayBlockingQueue<Kunde> get_vormerkerListe() {
         return _vormerkerListe;
     }

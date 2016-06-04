@@ -44,6 +44,10 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
      */
     private VerleihProtokollierer _protokollierer;
 
+    /**
+     * Diese Map speichert für jedes eingefügte Medium die dazugehörige Vormerkkarte. Ein Zugriff auf die Vormerkkarte ist
+     * dadurch leicht über die Angabe des Mediums möglich. Beispiel: _vormerkKarten.get(medium)
+     */
     private Map<Medium, VormerkKarte> _vormerkKarten = new HashMap<Medium, VormerkKarte>();
 
     /**
@@ -113,7 +117,8 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
 
     @Override
     public Verleihkarte getVerleihkarteFuer(Medium medium) {
-        assert istVerliehen(medium) : "Vorbedingung verletzt: istVerliehen(medium)";
+        // TODO delete maybe?
+        // assert istVerliehen(medium) : "Vorbedingung verletzt: istVerliehen(medium)";
         return _verleihkarten.get(medium);
     }
 
