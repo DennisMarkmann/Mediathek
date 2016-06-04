@@ -3,6 +3,8 @@ package de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Kunde;
@@ -152,17 +154,15 @@ public class VormerkWerkzeug {
     /**
      * Merkt die ausgewählten Medien für einen Kunden vor. Diese Methode wird über einen Listener angestoßen, der reagiert, wenn
      * der Benutzer den VormerkButton drückt.
+     * 
+     * @throws ProtokollierException
+     * @throws VormerkException
      */
-    private void merkeAusgewaehlteMedienVor() {
+    private void merkeAusgewaehlteMedienVor() throws VormerkException, ProtokollierException {
 
         List<Medium> selectedMedien = _medienAuflisterWerkzeug.getSelectedMedien();
         Kunde selectedKunde = _kundenAuflisterWerkzeug.getSelectedKunde();
-        try {
-            _verleihService.vormerkenAn(selectedKunde, selectedMedien);
-        } catch (ProtokollierException e) {
-            // TODO Exception handling
-            e.printStackTrace();
-        }
+        _verleihService.vormerkenAn(selectedKunde, selectedMedien);
 
     }
 
@@ -224,7 +224,12 @@ public class VormerkWerkzeug {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                merkeAusgewaehlteMedienVor();
+                try {
+                    merkeAusgewaehlteMedienVor();
+                } catch (VormerkException | ProtokollierException exception) {
+                    JOptionPane.showMessageDialog(null, exception.getMessage(),
+                            "Fehlermeldung", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }

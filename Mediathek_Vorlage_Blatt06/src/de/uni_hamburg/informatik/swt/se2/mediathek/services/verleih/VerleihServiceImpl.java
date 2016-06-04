@@ -73,10 +73,18 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         _medienbestand = medienbestand;
         _protokollierer = new VerleihProtokollierer();
     }
-
+    
+/**
+ *  Entfernt VormerkKarte.
+ *  
+ * @param medium fuer das die Vormerkkarte entfernt werden soll. 
+ * @param kunde auf den geprueft wird ob er sich an Index 0 der Liste befindet.
+ * 
+ * @throws ProtokollierException falls zum Beispiel die Datei gesperrt ist in die protokolliert werden soll.
+ */
     private void entferneVormerkKarte(Medium medium, Kunde kunde) throws ProtokollierException {
         VormerkKarte vormerkKarte = this.getVormerkKarteFuer(medium);
-        if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(1).equals(kunde)) {
+        if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(0).equals(kunde)) {
             _protokollierer.protokolliere(VerleihProtokollierer.VormerkEreignis.ENTFERNUNG, vormerkKarte);
             vormerkKarte.verleiheAnVormerker();
             if (vormerkKarte.get_vormerkerListe().size() == 0) {
@@ -117,8 +125,6 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
 
     @Override
     public Verleihkarte getVerleihkarteFuer(Medium medium) {
-        // TODO delete maybe?
-        // assert istVerliehen(medium) : "Vorbedingung verletzt: istVerliehen(medium)";
         return _verleihkarten.get(medium);
     }
 
@@ -283,15 +289,14 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                 entferneVormerkKarte(medium, kunde);
             }
         } catch (ProtokollierException pe) {
-            // TODO Exception handling: Display Info to the user? --> Exception to GUI
+           throw pe;
         } finally {
-            // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
             informiereUeberAenderung();
         }
     }
 
     @Override
-    public void vormerkenAn(Kunde kunde, List<Medium> medien) throws ProtokollierException {
+    public void vormerkenAn(Kunde kunde, List<Medium> medien) throws ProtokollierException, VormerkException {
 
         assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 
@@ -306,11 +311,10 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                 }
                 _protokollierer.protokolliere(VerleihProtokollierer.VormerkEreignis.VORMERKUNG, vormerkKarte);
             } catch (VormerkException e) {
-                // TODO Exception handling
+                throw e;
             } catch (ProtokollierException pe) {
-                // TODO Exception handling: Display Info to the user? --> Exception to GUI
+                throw pe;
             } finally {
-                // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
                 informiereUeberAenderung();
             }
         }

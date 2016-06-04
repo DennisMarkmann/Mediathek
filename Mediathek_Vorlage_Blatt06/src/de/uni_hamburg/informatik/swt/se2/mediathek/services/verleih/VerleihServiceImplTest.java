@@ -9,11 +9,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Datum;
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Kundennummer;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Kunde;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Verleihkarte;
+import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.VormerkKarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.CD;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.ServiceObserver;
@@ -21,6 +23,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.services.kundenstamm.Kundenst
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.kundenstamm.KundenstammServiceImpl;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.medienbestand.MedienbestandService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.medienbestand.MedienbestandServiceImpl;
+import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
 
 /**
  * @author SE2-Team
@@ -31,10 +34,14 @@ public class VerleihServiceImplTest
     private Kunde _kunde;
     private VerleihService _service;
     private List<Medium> _medienListe;
-    private Kunde _vormerkkunde;
+    private Kunde _vormerkkunde1;
+    private Kunde _vormerkkunde2;
+    private Kunde _vormerkkunde3;
+    private Kunde _vormerkkunde4;
+    private VormerkKarte _vormerkKarte;
 
     //TODO AddTests
-    
+
     public VerleihServiceImplTest()
     {
         _datum = new Datum(3, 4, 2009);
@@ -42,10 +49,18 @@ public class VerleihServiceImplTest
                 new ArrayList<Kunde>());
         _kunde = new Kunde(new Kundennummer(123456), "ich", "du");
 
-        _vormerkkunde = new Kunde(new Kundennummer(666999), "paul", "panter");
+        _vormerkkunde1 = new Kunde(new Kundennummer(666991), "paul", "panter");
+        _vormerkkunde2 = new Kunde(new Kundennummer(666992), "fritz",
+                "Mueller");
+        _vormerkkunde3 = new Kunde(new Kundennummer(666993), "David",
+                "Schmidt");
+        _vormerkkunde4 = new Kunde(new Kundennummer(666994), "Lisa", "Meyer");
 
         kundenstamm.fuegeKundenEin(_kunde);
-        kundenstamm.fuegeKundenEin(_vormerkkunde);
+        kundenstamm.fuegeKundenEin(_vormerkkunde1);
+        kundenstamm.fuegeKundenEin(_vormerkkunde2);
+        kundenstamm.fuegeKundenEin(_vormerkkunde3);
+        kundenstamm.fuegeKundenEin(_vormerkkunde4);
         MedienbestandService medienbestand = new MedienbestandServiceImpl(
                 new ArrayList<Medium>());
         Medium medium = new CD("CD1", "baz", "foo", 123);
@@ -150,6 +165,103 @@ public class VerleihServiceImplTest
         _service.verleiheAn(_kunde,
                 Collections.singletonList(_medienListe.get(2)), _datum);
         assertFalse(ereignisse[0]);
+    }
+
+    @Test
+    public void testeVormerkenFuerEinenKunden()
+            throws ProtokollierException, VormerkException
+    {
+        _service.vormerkenAn(_vormerkkunde1, _medienListe);
+
+        for (Medium medium : _medienListe)
+        {
+            _vormerkKarte = _service.getVormerkKarteFuer(medium);
+            assertTrue(_vormerkKarte.equalsErsterVormerker(_vormerkkunde1));
+        }
+
+    }
+
+    @Test
+    public void testeVormerkenFuerDreiKunden()
+            throws ProtokollierException, VormerkException
+    {
+        _service.vormerkenAn(_vormerkkunde1, _medienListe);
+        _service.vormerkenAn(_vormerkkunde2, _medienListe);
+        _service.vormerkenAn(_vormerkkunde3, _medienListe);
+        for (Medium medium : _medienListe)
+        {
+            _vormerkKarte = _service.getVormerkKarteFuer(medium);
+            assertTrue(_vormerkKarte.equalsErsterVormerker(_vormerkkunde1));
+            assertTrue(_vormerkKarte.gibKundeFuerIndex(1)
+                .equals(_vormerkkunde2));
+            assertTrue(_vormerkKarte.gibKundeFuerIndex(2)
+                .equals(_vormerkkunde3));
+        }
+
+    }
+
+    @Test
+    public void testeVormerkeException()
+            throws ProtokollierException, VormerkException
+    {
+        ExpectedException thrown = ExpectedException.none();
+
+        _service.vormerkenAn(_vormerkkunde1, _medienListe);
+        _service.vormerkenAn(_vormerkkunde2, _medienListe);
+        _service.vormerkenAn(_vormerkkunde3, _medienListe);
+        _service.vormerkenAn(_vormerkkunde4, _medienListe);
+
+        thrown.expect(VormerkException.class);
+    }
+
+    public void testeVormerkenDoppeltFuerKunden()
+            throws ProtokollierException, VormerkException
+    {
+        _service.vormerkenAn(_vormerkkunde1, _medienListe);
+        _service.vormerkenAn(_vormerkkunde2, _medienListe);
+        _service.vormerkenAn(_vormerkkunde1, _medienListe);
+
+        for (Medium medium : _medienListe)
+        {
+            _vormerkKarte = _service.getVormerkKarteFuer(medium);
+        }
+
+        assertFalse(_vormerkKarte.gibKundeFuerIndex(2)
+            .equals(_vormerkkunde1));
+    }
+
+    @Test
+    public void testeGetVormerkKarteFuer()
+    {
+        VormerkKarte vormerkKarteTest = null;
+        for (Medium medium : _medienListe)
+        {
+            _vormerkKarte = _service.getVormerkKarteFuer(medium);
+        }
+
+        for (Medium medium : _medienListe)
+        {
+            vormerkKarteTest = _service.getVormerkKarteFuer(medium);
+        }
+        assertEquals(_vormerkKarte, vormerkKarteTest);
+    }
+
+    @Test
+    public void testeEntferneVormerkKarte()
+            throws ProtokollierException, VormerkException
+    {
+        _service.vormerkenAn(_vormerkkunde1, _medienListe);
+        for (Medium medium : _medienListe)
+        {
+            //_service.entferneVormerkKarte(medium, _vormerkkunde1);
+        }
+
+        for (Medium medium : _medienListe)
+        {
+            _vormerkKarte = _service.getVormerkKarteFuer(medium);
+        }
+        assertTrue(_vormerkKarte.equals(null));
+
     }
 
 }

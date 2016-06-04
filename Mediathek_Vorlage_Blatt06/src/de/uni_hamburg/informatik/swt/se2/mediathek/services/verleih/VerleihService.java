@@ -8,6 +8,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Verleihkarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.VormerkKarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.ObservableService;
+import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
 
 /**
  * Der VerleihService erlaubt es, Medien auszuleihen und zurückzugeben.
@@ -240,12 +241,13 @@ public interface VerleihService extends ObservableService
      *
      * @throws ProtokollierException Wenn beim Protokollieren des
      *             Verleihvorgangs ein Fehler auftritt.
+     * @throws VormerkException 
      *
      * @require kundeImBestand(kunde)
      *
      */
     void vormerkenAn(Kunde kunde, List<Medium> medien)
-            throws ProtokollierException;
+            throws ProtokollierException, VormerkException;
 
     boolean hatKundeMediumAusgeliehen(Kunde kunde, Medium medium);
 
