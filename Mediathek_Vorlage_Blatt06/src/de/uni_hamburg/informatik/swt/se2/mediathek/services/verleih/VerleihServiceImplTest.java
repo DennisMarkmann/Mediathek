@@ -32,7 +32,7 @@ public class VerleihServiceImplTest
 {
     private Datum _datum;
     private Kunde _kunde;
-    private VerleihService _service;
+    private VerleihServiceImpl _service;
     private List<Medium> _medienListe;
     private Kunde _vormerkkunde1;
     private Kunde _vormerkkunde2;
@@ -253,14 +253,14 @@ public class VerleihServiceImplTest
         _service.vormerkenAn(_vormerkkunde1, _medienListe);
         for (Medium medium : _medienListe)
         {
-            //_service.entferneVormerkKarte(medium, _vormerkkunde1);
+            _service.entferneVormerkKarte(medium, _vormerkkunde1);
         }
 
         for (Medium medium : _medienListe)
         {
             _vormerkKarte = _service.getVormerkKarteFuer(medium);
+            assertTrue(_vormerkKarte == null);
         }
-        assertTrue(_vormerkKarte.equals(null));
 
     }
 
