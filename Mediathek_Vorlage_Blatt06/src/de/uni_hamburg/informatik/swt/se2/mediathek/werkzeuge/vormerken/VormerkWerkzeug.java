@@ -142,7 +142,7 @@ public class VormerkWerkzeug {
 
             VormerkKarte vormerkKarte = _verleihService.getVormerkKarteFuer(medium);
             if (!vormerkBar || vormerkKarte != null && (vormerkKarte.istKomplettVorgemerkt()
-                    || vormerkKarte.istVerliehenAnKunden(kunde) || _verleihService.hatKundeMediumAusgeliehen(kunde, medium))) {
+                    || vormerkKarte.istVorgemerktVonKunde(kunde) || _verleihService.hatKundeMediumAusgeliehen(kunde, medium))) {
                 return false;
             }
 

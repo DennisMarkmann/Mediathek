@@ -139,7 +139,7 @@ public class VerleihServiceImplTest
     }
 
     @Test
-    public void testVerleihEreignisBeobachter() throws ProtokollierException
+    public void testeVerleihEreignisBeobachter() throws ProtokollierException
     {
         final boolean ereignisse[] = new boolean[1];
         ereignisse[0] = false;
