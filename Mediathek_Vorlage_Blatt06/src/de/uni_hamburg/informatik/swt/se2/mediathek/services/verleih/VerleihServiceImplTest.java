@@ -2,6 +2,7 @@ package de.uni_hamburg.informatik.swt.se2.mediathek.services.verleih;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -39,8 +40,6 @@ public class VerleihServiceImplTest
     private Kunde _vormerkkunde3;
     private Kunde _vormerkkunde4;
     private VormerkKarte _vormerkKarte;
-
-    //TODO AddTests
 
     public VerleihServiceImplTest()
     {
@@ -244,24 +243,6 @@ public class VerleihServiceImplTest
             vormerkKarteTest = _service.getVormerkKarteFuer(medium);
         }
         assertEquals(_vormerkKarte, vormerkKarteTest);
-    }
-
-    @Test
-    public void testeEntferneVormerkKarte()
-            throws ProtokollierException, VormerkException
-    {
-        _service.vormerkenAn(_vormerkkunde1, _medienListe);
-        for (Medium medium : _medienListe)
-        {
-            _service.entferneVormerkKarte(medium, _vormerkkunde1);
-        }
-
-        for (Medium medium : _medienListe)
-        {
-            _vormerkKarte = _service.getVormerkKarteFuer(medium);
-            assertTrue(_vormerkKarte == null);
-        }
-
     }
 
 }

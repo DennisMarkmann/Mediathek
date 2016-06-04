@@ -21,7 +21,6 @@ public class VerleihkarteTest
     private Kunde _kunde;
     private Medium _medium;
 
-    // TODO AddTests
 
     public VerleihkarteTest()
     {
