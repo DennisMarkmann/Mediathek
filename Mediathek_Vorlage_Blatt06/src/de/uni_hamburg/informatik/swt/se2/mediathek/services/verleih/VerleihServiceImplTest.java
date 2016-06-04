@@ -168,7 +168,7 @@ public class VerleihServiceImplTest
     }
 
     @Test
-    public void testeVormerkeAn() throws ProtokollierException, VormerkException
+    public void testeVormerkenFuerEinenKunden() throws ProtokollierException, VormerkException
     {
         _service.vormerkenAn(_vormerkkunde1, _medienListe);
 
@@ -181,7 +181,7 @@ public class VerleihServiceImplTest
     }
 
     @Test
-    public void testeVormerkeVoll()
+    public void testeVormerkenFuerDreiKunden()
             throws ProtokollierException, VormerkException
     {
         _service.vormerkenAn(_vormerkkunde1, _medienListe);
@@ -191,11 +191,10 @@ public class VerleihServiceImplTest
         {
             _vormerkKarte = _service.getVormerkKarteFuer(medium);
             assertTrue(_vormerkKarte.equalsErsterVormerker(_vormerkkunde1));
-            assertTrue(_vormerkKarte.gibKundeFuerIndex(2)
+            assertTrue(_vormerkKarte.gibKundeFuerIndex(1)
                 .equals(_vormerkkunde2));
-            assertTrue(_vormerkKarte.gibKundeFuerIndex(3)
+            assertTrue(_vormerkKarte.gibKundeFuerIndex(2)
                 .equals(_vormerkkunde3));
-
         }
 
     }
@@ -204,18 +203,17 @@ public class VerleihServiceImplTest
     public void testeVormerkeException()
             throws ProtokollierException, VormerkException
     {
-
+        ExpectedException thrown = ExpectedException.none();
+        
         _service.vormerkenAn(_vormerkkunde1, _medienListe);
         _service.vormerkenAn(_vormerkkunde2, _medienListe);
         _service.vormerkenAn(_vormerkkunde3, _medienListe);
         _service.vormerkenAn(_vormerkkunde4, _medienListe);
 
-        ExpectedException thrown = ExpectedException.none();
         thrown.expect(VormerkException.class);
-
     }
 
-    public void testeVormerkerIllegal()
+    public void testeVormerkenDoppeltFuerKunden()
             throws ProtokollierException, VormerkException
     {
         _service.vormerkenAn(_vormerkkunde1, _medienListe);

@@ -109,7 +109,7 @@ public class VormerkKarte {
     public Kunde gibKundeFuerIndex(int index) {
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         Kunde kunde = null;
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i <= index; i++) {
             kunde = iterator.next();
         }
         return kunde;
