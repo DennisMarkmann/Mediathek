@@ -285,7 +285,6 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         } catch (ProtokollierException pe) {
            throw pe;
         } finally {
-            // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
             informiereUeberAenderung();
         }
     }
@@ -310,7 +309,6 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
             } catch (ProtokollierException pe) {
                 throw pe;
             } finally {
-                // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
                 informiereUeberAenderung();
             }
         }
