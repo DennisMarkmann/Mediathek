@@ -12,7 +12,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class VormerkkarteTest
+public class VormerkKarteTest
 {
 
     private ArrayBlockingQueue<Kunde> vormerkerListe;
