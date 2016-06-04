@@ -3,8 +3,6 @@ package de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Map;
-
 import javax.swing.JPanel;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Kunde;
@@ -59,8 +57,6 @@ public class VormerkWerkzeug {
      * Das Sub-Werkzeug zum Anzeigen der Details des selektieten Kunden.
      */
     private KundenDetailAnzeigerWerkzeug _kundenDetailAnzeigerWerkzeug;
-
-    private Map<Medium, VormerkKarte> _vormerkkarten;
 
     /**
      * Initialisiert ein neues VormerkWerkzeug. Es wird die Benutzungsoberfläche mit den Ausleihaktionen erzeugt, Beobachter an
@@ -170,17 +166,6 @@ public class VormerkWerkzeug {
 
     }
 
-    public void merkeVor(Medium medium, Kunde vormerker) throws VormerkException {
-
-        VormerkKarte vormerkKarte = sucheVormerkKarte(medium);
-        if (vormerkKarte == null) {
-            vormerkKarte = new VormerkKarte(medium, vormerker);
-            _vormerkkarten.put(medium, vormerkKarte);
-        } else {
-            vormerkKarte.addVormerker(vormerker);
-        }
-    }
-
     /**
      * Registiert die Aktion, die ausgeführt wird, wenn ein Kunde ausgewählt wird.
      */
@@ -255,10 +240,6 @@ public class VormerkWerkzeug {
                 aktualisiereVormerkButton();
             }
         });
-    }
-
-    private VormerkKarte sucheVormerkKarte(Medium medium) {
-        return _vormerkkarten.get(medium);
     }
 
     /**
