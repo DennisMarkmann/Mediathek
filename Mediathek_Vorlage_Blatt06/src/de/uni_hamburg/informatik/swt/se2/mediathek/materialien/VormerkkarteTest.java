@@ -15,129 +15,132 @@ import org.junit.Test;
 public class VormerkkarteTest
 {
 
-	private ArrayBlockingQueue<Kunde> vormerkerListe;
-	private Kunde _kunde1;
-	private Kunde _kunde2;
-	private Kunde _kunde3;
-	private Medium _medium;
-	private VormerkKarte _vormerkkarte;
+    private ArrayBlockingQueue<Kunde> vormerkerListe;
+    private Kunde _kunde1;
+    private Kunde _kunde2;
+    private Kunde _kunde3;
+    private Medium _medium;
+    private VormerkKarte _vormerkkarte;
 
-	@Before
-	public void generateTestDate() throws VormerkException
-	{
-		_kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
-		_kunde2 = new Kunde(new Kundennummer(123452), "ich2", "du2");
-		_kunde3 = new Kunde(new Kundennummer(123453), "ich3", "du3");
-		_vormerkkarte = new VormerkKarte(_medium, _kunde1);
-	}
+    @Before
+    public void generateTestDate() throws VormerkException
+    {
+        _kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
+        _kunde2 = new Kunde(new Kundennummer(123452), "ich2", "du2");
+        _kunde3 = new Kunde(new Kundennummer(123453), "ich3", "du3");
+        _vormerkkarte = new VormerkKarte(_medium, _kunde1);
+    }
 
-	@Test
-	public void testGetMedium()
-	{
-		assertEquals(_medium, _vormerkkarte.get_medium());
-	}
+    @Test
+    public void testGetMedium()
+    {
+        assertEquals(_medium, _vormerkkarte.get_medium());
+    }
 
-	@Test
-	public void testKonstruktor()
-	{
+    @Test
+    public void testKonstruktor()
+    {
 
-		vormerkerListe = _vormerkkarte.get_vormerkerListe();
-		assertEquals(_kunde1, vormerkerListe.peek());
-		assertEquals(_medium, _vormerkkarte.get_medium());
-	}
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.peek());
+        assertEquals(_medium, _vormerkkarte.get_medium());
+    }
 
-	@Test
-	public void testZweiterHinzugefügterKundeIstVorhanden() throws VormerkException
-	{
-		_vormerkkarte.addVormerker(_kunde2);
-		vormerkerListe = _vormerkkarte.get_vormerkerListe();
-		assertEquals(_kunde1, vormerkerListe.poll());
-		assertEquals(_kunde2, vormerkerListe.poll());
-	}
+    @Test
+    public void testZweiterHinzugefügterKundeIstVorhanden()
+            throws VormerkException
+    {
+        _vormerkkarte.addVormerker(_kunde2);
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.poll());
+        assertEquals(_kunde2, vormerkerListe.poll());
+    }
 
-	@Test
-	public void testDritterHinzugefügterKundeIstVorhanden() throws VormerkException
-	{
-		_vormerkkarte.addVormerker(_kunde2);
-		_vormerkkarte.addVormerker(_kunde3);
-		vormerkerListe = _vormerkkarte.get_vormerkerListe();
-		assertEquals(_kunde1, vormerkerListe.poll());
-		assertEquals(_kunde2, vormerkerListe.poll());
-		assertEquals(_kunde3, vormerkerListe.poll());
-	}
+    @Test
+    public void testDritterHinzugefügterKundeIstVorhanden()
+            throws VormerkException
+    {
+        _vormerkkarte.addVormerker(_kunde2);
+        _vormerkkarte.addVormerker(_kunde3);
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.poll());
+        assertEquals(_kunde2, vormerkerListe.poll());
+        assertEquals(_kunde3, vormerkerListe.poll());
+    }
 
-	@Test
-	public void testSelberKundeZweimalVormerkenNichtMöglich() throws VormerkException
-	{
-		_vormerkkarte.addVormerker(_kunde2);
-		_vormerkkarte.addVormerker(_kunde2);
-		vormerkerListe = _vormerkkarte.get_vormerkerListe();
-		assertEquals(_kunde1, vormerkerListe.poll());
-		assertEquals(_kunde2, vormerkerListe.poll());
-		assertEquals(null, vormerkerListe.poll());
-	}
+    @Test
+    public void testSelberKundeZweimalVormerkenNichtMöglich()
+            throws VormerkException
+    {
+        _vormerkkarte.addVormerker(_kunde2);
+        _vormerkkarte.addVormerker(_kunde2);
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.poll());
+        assertEquals(_kunde2, vormerkerListe.poll());
+        assertEquals(null, vormerkerListe.poll());
+    }
 
-	@Test
-	public void testAddVormerker()
-	{
+    @Test
+    public void testAddVormerker()
+    {
 
-		vormerkerListe = _vormerkkarte.get_vormerkerListe();
-		assertEquals(_kunde1, vormerkerListe.peek());
-	}
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.peek());
+    }
 
-	@Test
-	public void testVerleiheAnVormerker() throws VormerkException
-	{
-		_vormerkkarte.addVormerker(_kunde2);
-		_vormerkkarte.verleiheAnVormerker();
-		vormerkerListe = _vormerkkarte.get_vormerkerListe();
-		assertEquals(_kunde2, vormerkerListe.peek());
-	}
+    @Test
+    public void testVerleiheAnVormerker() throws VormerkException
+    {
+        _vormerkkarte.addVormerker(_kunde2);
+        _vormerkkarte.verleiheAnVormerker();
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde2, vormerkerListe.peek());
+    }
 
-	@Test
-	public void testGibAlleKunden() throws VormerkException
-	{
-		_vormerkkarte.addVormerker(_kunde2);
-		_vormerkkarte.addVormerker(_kunde3);
-		ArrayList<Kunde> kunden = _vormerkkarte.gibAlleKunden();
+    @Test
+    public void testGibAlleKunden() throws VormerkException
+    {
+        _vormerkkarte.addVormerker(_kunde2);
+        _vormerkkarte.addVormerker(_kunde3);
+        ArrayList<Kunde> kunden = _vormerkkarte.gibAlleKunden();
 
-		assertEquals(_kunde1, kunden.get(0));
-		assertEquals(_kunde2, kunden.get(1));
-		assertEquals(_kunde3, kunden.get(2));
-	}
+        assertEquals(_kunde1, kunden.get(0));
+        assertEquals(_kunde2, kunden.get(1));
+        assertEquals(_kunde3, kunden.get(2));
+    }
 
-	@Test
-	public void testIstListeEmpty() throws VormerkException
-	{
-		_vormerkkarte.verleiheAnVormerker();
-		assertTrue(_vormerkkarte.istListeEmpty());
-	}
+    @Test
+    public void testIstListeEmpty() throws VormerkException
+    {
+        _vormerkkarte.verleiheAnVormerker();
+        assertTrue(_vormerkkarte.istListeEmpty());
+    }
 
-	@Test
-	public void testIstVorgemerktVonKunde()
-	{
-		assertTrue(_vormerkkarte.istVorgemerktVonKunde(_kunde1));
-		assertFalse(_vormerkkarte.istVorgemerktVonKunde(_kunde2));
-	}
+    @Test
+    public void testIstVorgemerktVonKunde()
+    {
+        assertTrue(_vormerkkarte.istVorgemerktVonKunde(_kunde1));
+        assertFalse(_vormerkkarte.istVorgemerktVonKunde(_kunde2));
+    }
 
-	@Test
-	public void testIstKomplettVorgemerkt() throws VormerkException
-	{
-		assertFalse(_vormerkkarte.istKomplettVorgemerkt());
-		_vormerkkarte.addVormerker(_kunde2);
-		assertFalse(_vormerkkarte.istKomplettVorgemerkt());
-		_vormerkkarte.addVormerker(_kunde3);
-		assertTrue(_vormerkkarte.istKomplettVorgemerkt());
-	}
-	
-	@Test
-	public void testGibKundeFuerIndex() throws VormerkException
-	{
-		_vormerkkarte.addVormerker(_kunde2);
-		_vormerkkarte.addVormerker(_kunde3);
-		assertEquals(_kunde1, _vormerkkarte.gibKundeFuerIndex(0));
-		assertEquals(_kunde2, _vormerkkarte.gibKundeFuerIndex(1));
-		assertEquals(_kunde3, _vormerkkarte.gibKundeFuerIndex(2));
-	}
+    @Test
+    public void testIstKomplettVorgemerkt() throws VormerkException
+    {
+        assertFalse(_vormerkkarte.istKomplettVorgemerkt());
+        _vormerkkarte.addVormerker(_kunde2);
+        assertFalse(_vormerkkarte.istKomplettVorgemerkt());
+        _vormerkkarte.addVormerker(_kunde3);
+        assertTrue(_vormerkkarte.istKomplettVorgemerkt());
+    }
+
+    @Test
+    public void testGibKundeFuerIndex() throws VormerkException
+    {
+        _vormerkkarte.addVormerker(_kunde2);
+        _vormerkkarte.addVormerker(_kunde3);
+        assertEquals(_kunde1, _vormerkkarte.gibKundeFuerIndex(0));
+        assertEquals(_kunde2, _vormerkkarte.gibKundeFuerIndex(1));
+        assertEquals(_kunde3, _vormerkkarte.gibKundeFuerIndex(2));
+    }
 
 }

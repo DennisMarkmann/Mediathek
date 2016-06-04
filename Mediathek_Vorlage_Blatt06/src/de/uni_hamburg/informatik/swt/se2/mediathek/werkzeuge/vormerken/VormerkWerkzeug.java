@@ -28,7 +28,8 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.subwerkzeuge.vormer
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class VormerkWerkzeug {
+public class VormerkWerkzeug
+{
 
     /**
      * Die UI-Komponente der Ausleihe.
@@ -72,7 +73,9 @@ public class VormerkWerkzeug {
      * @require kundenstamm != null
      * @require verleihService != null
      */
-    public VormerkWerkzeug(MedienbestandService medienbestand, KundenstammService kundenstamm, VerleihService verleihService) {
+    public VormerkWerkzeug(MedienbestandService medienbestand,
+            KundenstammService kundenstamm, VerleihService verleihService)
+    {
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand != null";
         assert kundenstamm != null : "Vorbedingung verletzt: kundenstamm != null";
         assert verleihService != null : "Vorbedingung verletzt: verleihService != null";
@@ -81,13 +84,13 @@ public class VormerkWerkzeug {
 
         // Subwerkzeuge erstellen
         _kundenAuflisterWerkzeug = new KundenauflisterWerkzeug(kundenstamm);
-        _medienAuflisterWerkzeug = new VormerkMedienauflisterWerkzeug(medienbestand, verleihService);
+        _medienAuflisterWerkzeug = new VormerkMedienauflisterWerkzeug(
+                medienbestand, verleihService);
         _medienDetailAnzeigerWerkzeug = new MedienDetailAnzeigerWerkzeug();
         _kundenDetailAnzeigerWerkzeug = new KundenDetailAnzeigerWerkzeug();
 
         // UI wird erzeugt.
-        _vormerkUI = new VormerkUI(
-                _kundenAuflisterWerkzeug.getUIPanel(),
+        _vormerkUI = new VormerkUI(_kundenAuflisterWerkzeug.getUIPanel(),
                 _medienAuflisterWerkzeug.getUIPanel(),
                 _kundenDetailAnzeigerWerkzeug.getUIPanel(),
                 _medienDetailAnzeigerWerkzeug.getUIPanel());
@@ -109,9 +112,11 @@ public class VormerkWerkzeug {
      * Wenn keine Medien selektiert sind oder wenn mindestes eines der selektierten Medien bereits ausgeliehen ist oder wenn
      * kein Kunde ausgewählt ist, wird der Button ausgegraut.
      */
-    private void aktualisiereVormerkButton() {
+    private void aktualisiereVormerkButton()
+    {
         boolean istVormerkenMoeglich = istVormerkenMoeglich();
-        _vormerkUI.getVormerkenButton().setEnabled(istVormerkenMoeglich);
+        _vormerkUI.getVormerkenButton()
+            .setEnabled(istVormerkenMoeglich);
     }
 
     /**
@@ -119,7 +124,8 @@ public class VormerkWerkzeug {
      *
      * @ensure result != null
      */
-    public JPanel getUIPanel() {
+    public JPanel getUIPanel()
+    {
         return _vormerkUI.getUIPanel();
     }
 
@@ -128,21 +134,31 @@ public class VormerkWerkzeug {
      *
      * @return true, wenn vormerken möglich ist, sonst false.
      */
-    private boolean istVormerkenMoeglich() {
+    private boolean istVormerkenMoeglich()
+    {
         List<Medium> medien = _medienAuflisterWerkzeug.getSelectedMedien();
         Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
 
         boolean vormerkenMoeglich = (kunde != null) && !medien.isEmpty();
-        if (!vormerkenMoeglich) {
+        if (!vormerkenMoeglich)
+        {
             return false;
         }
         boolean vormerkBar = true;
-        for (Medium medium : medien) {
+        for (Medium medium : medien)
+        {
             vormerkBar = !_verleihService.istVerliehenAn(kunde, medium);
 
-            VormerkKarte vormerkKarte = _verleihService.getVormerkKarteFuer(medium);
-            if (!vormerkBar || vormerkKarte != null && (vormerkKarte.istKomplettVorgemerkt()
-                    || vormerkKarte.istVorgemerktVonKunde(kunde) || _verleihService.hatKundeMediumAusgeliehen(kunde, medium))) {
+            VormerkKarte vormerkKarte = _verleihService
+                .getVormerkKarteFuer(medium);
+            if (!vormerkBar
+                    || vormerkKarte != null
+                            && (vormerkKarte.istKomplettVorgemerkt()
+                                    || vormerkKarte.istVorgemerktVonKunde(kunde)
+                                    || _verleihService
+                                        .hatKundeMediumAusgeliehen(kunde,
+                                                medium)))
+            {
                 return false;
             }
 
@@ -158,9 +174,12 @@ public class VormerkWerkzeug {
      * @throws ProtokollierException
      * @throws VormerkException
      */
-    private void merkeAusgewaehlteMedienVor() throws VormerkException, ProtokollierException {
+    private void merkeAusgewaehlteMedienVor()
+            throws VormerkException, ProtokollierException
+    {
 
-        List<Medium> selectedMedien = _medienAuflisterWerkzeug.getSelectedMedien();
+        List<Medium> selectedMedien = _medienAuflisterWerkzeug
+            .getSelectedMedien();
         Kunde selectedKunde = _kundenAuflisterWerkzeug.getSelectedKunde();
         _verleihService.vormerkenAn(selectedKunde, selectedMedien);
 
@@ -169,11 +188,14 @@ public class VormerkWerkzeug {
     /**
      * Registiert die Aktion, die ausgeführt wird, wenn ein Kunde ausgewählt wird.
      */
-    private void registriereKundenAnzeigenAktion() {
-        _kundenAuflisterWerkzeug.registriereBeobachter(new SubWerkzeugObserver() {
+    private void registriereKundenAnzeigenAktion()
+    {
+        _kundenAuflisterWerkzeug.registriereBeobachter(new SubWerkzeugObserver()
+        {
 
             @Override
-            public void reagiereAufAenderung() {
+            public void reagiereAufAenderung()
+            {
                 zeigeAusgewaehltenKunden();
                 aktualisiereVormerkButton();
             }
@@ -183,11 +205,14 @@ public class VormerkWerkzeug {
     /**
      * Registiert die Aktion, die ausgeführt wird, wenn ein Medium ausgewählt wird.
      */
-    private void registriereMedienAnzeigenAktion() {
-        _medienAuflisterWerkzeug.registriereBeobachter(new SubWerkzeugObserver() {
+    private void registriereMedienAnzeigenAktion()
+    {
+        _medienAuflisterWerkzeug.registriereBeobachter(new SubWerkzeugObserver()
+        {
 
             @Override
-            public void reagiereAufAenderung() {
+            public void reagiereAufAenderung()
+            {
                 zeigeAusgewaehlteMedien();
                 aktualisiereVormerkButton();
             }
@@ -197,14 +222,16 @@ public class VormerkWerkzeug {
     /**
      * Registriert die Aktionen, die bei benachrichtigungen der Services ausgeführt werden.
      */
-    private void registriereServiceBeobachter() {
+    private void registriereServiceBeobachter()
+    {
         registriereVormerkButtonAktualisierenAktion();
     }
 
     /**
      * Registriert die Aktionen, die bei bestimmten Änderungen in Subwerkzeugen ausgeführt werden.
      */
-    private void registriereSubWerkzeugBeobachter() {
+    private void registriereSubWerkzeugBeobachter()
+    {
         registriereKundenAnzeigenAktion();
         registriereMedienAnzeigenAktion();
     }
@@ -212,36 +239,48 @@ public class VormerkWerkzeug {
     /**
      * Registriert die Aktionen, die bei bestimmten UI-Events ausgeführt werden.
      */
-    private void registriereUIAktionen() {
+    private void registriereUIAktionen()
+    {
         registriereVormerkAktion();
     }
 
     /**
      * Registriert die Aktion, die ausgeführt wird, wenn auf den Vormerk-Button gedrückt wird.
      */
-    private void registriereVormerkAktion() {
-        _vormerkUI.getVormerkenButton().addActionListener(new ActionListener() {
+    private void registriereVormerkAktion()
+    {
+        _vormerkUI.getVormerkenButton()
+            .addActionListener(new ActionListener()
+            {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    merkeAusgewaehlteMedienVor();
-                } catch (VormerkException | ProtokollierException exception) {
-                    JOptionPane.showMessageDialog(null, exception.getMessage(),
-                            "Fehlermeldung", JOptionPane.ERROR_MESSAGE);
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    try
+                    {
+                        merkeAusgewaehlteMedienVor();
+                    }
+                    catch (VormerkException | ProtokollierException exception)
+                    {
+                        JOptionPane.showMessageDialog(null,
+                                exception.getMessage(), "Fehlermeldung",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-            }
-        });
+            });
     }
 
     /**
      * Registriert die Aktion zur Aktualisierung des Vormerkbuttons, wenn eine Benachrichtigung vom Verleihservice auftaucht.
      */
-    private void registriereVormerkButtonAktualisierenAktion() {
-        _verleihService.registriereBeobachter(new ServiceObserver() {
+    private void registriereVormerkButtonAktualisierenAktion()
+    {
+        _verleihService.registriereBeobachter(new ServiceObserver()
+        {
 
             @Override
-            public void reagiereAufAenderung() {
+            public void reagiereAufAenderung()
+            {
                 aktualisiereVormerkButton();
             }
         });
@@ -250,15 +289,18 @@ public class VormerkWerkzeug {
     /**
      * Zeigt die Details der ausgewählten Medien.
      */
-    private void zeigeAusgewaehlteMedien() {
-        List<Medium> selectedMedien = _medienAuflisterWerkzeug.getSelectedMedien();
+    private void zeigeAusgewaehlteMedien()
+    {
+        List<Medium> selectedMedien = _medienAuflisterWerkzeug
+            .getSelectedMedien();
         _medienDetailAnzeigerWerkzeug.setMedien(selectedMedien);
     }
 
     /**
      * Zeigt die Details des ausgewählten Kunden (rechts im Fenster)
      */
-    private void zeigeAusgewaehltenKunden() {
+    private void zeigeAusgewaehltenKunden()
+    {
         Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
         _kundenDetailAnzeigerWerkzeug.setKunde(kunde);
     }

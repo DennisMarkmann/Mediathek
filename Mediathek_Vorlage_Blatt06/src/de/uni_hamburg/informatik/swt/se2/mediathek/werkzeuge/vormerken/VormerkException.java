@@ -1,6 +1,6 @@
 package de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken;
-import java.io.IOException;
 
+import java.io.IOException;
 
 /**
  * Eine VormerkException wird geworfen wenn das Vormerken
@@ -11,6 +11,7 @@ import java.io.IOException;
 public class VormerkException extends IOException
 {
     private static final long serialVersionUID = 1L;
+
     /**
      * Initialisiert eine neue DateiLeseException mit der übergebenen
      * Fehlermeldung.
