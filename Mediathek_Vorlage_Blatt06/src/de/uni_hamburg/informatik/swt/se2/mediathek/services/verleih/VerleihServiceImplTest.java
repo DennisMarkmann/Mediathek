@@ -225,7 +225,7 @@ public class VerleihServiceImplTest
             _vormerkKarte = _service.getVormerkKarteFuer(medium);
         }
 
-        assertFalse(_vormerkKarte.gibKundeFuerIndex(3)
+        assertFalse(_vormerkKarte.gibKundeFuerIndex(2)
             .equals(_vormerkkunde1));
     }
 

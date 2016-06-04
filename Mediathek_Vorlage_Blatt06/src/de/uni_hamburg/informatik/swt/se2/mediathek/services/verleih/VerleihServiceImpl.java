@@ -73,7 +73,14 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         _medienbestand = medienbestand;
         _protokollierer = new VerleihProtokollierer();
     }
-
+    
+/**
+ *  Entfernt VormerkKarte.
+ *  
+ * @param medium fuer das die Vormerkkarte entfernt werden soll. 
+ * @param kunde
+ * @throws ProtokollierException
+ */
     private void entferneVormerkKarte(Medium medium, Kunde kunde) throws ProtokollierException {
         VormerkKarte vormerkKarte = this.getVormerkKarteFuer(medium);
         if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(1).equals(kunde)) {
