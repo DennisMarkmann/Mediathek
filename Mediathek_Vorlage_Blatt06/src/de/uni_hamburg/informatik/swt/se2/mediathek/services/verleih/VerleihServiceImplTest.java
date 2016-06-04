@@ -168,7 +168,8 @@ public class VerleihServiceImplTest
     }
 
     @Test
-    public void testeVormerkenFuerEinenKunden() throws ProtokollierException, VormerkException
+    public void testeVormerkenFuerEinenKunden()
+            throws ProtokollierException, VormerkException
     {
         _service.vormerkenAn(_vormerkkunde1, _medienListe);
 
@@ -204,7 +205,7 @@ public class VerleihServiceImplTest
             throws ProtokollierException, VormerkException
     {
         ExpectedException thrown = ExpectedException.none();
-        
+
         _service.vormerkenAn(_vormerkkunde1, _medienListe);
         _service.vormerkenAn(_vormerkkunde2, _medienListe);
         _service.vormerkenAn(_vormerkkunde3, _medienListe);
@@ -232,12 +233,34 @@ public class VerleihServiceImplTest
     @Test
     public void testeGetVormerkKarteFuer()
     {
+        VormerkKarte vormerkKarteTest = null;
+        for (Medium medium : _medienListe)
+        {
+            _vormerkKarte = _service.getVormerkKarteFuer(medium);
+        }
 
+        for (Medium medium : _medienListe)
+        {
+            vormerkKarteTest = _service.getVormerkKarteFuer(medium);
+        }
+        assertEquals(_vormerkKarte, vormerkKarteTest);
     }
 
     @Test
     public void testeEntferneVormerkKarte()
+            throws ProtokollierException, VormerkException
     {
+        _service.vormerkenAn(_vormerkkunde1, _medienListe);
+        for (Medium medium : _medienListe)
+        {
+            //_service.entferneVormerkKarte(medium, _vormerkkunde1);
+        }
+
+        for (Medium medium : _medienListe)
+        {
+            _vormerkKarte = _service.getVormerkKarteFuer(medium);
+        }
+        assertTrue(_vormerkKarte.equals(null));
 
     }
 
