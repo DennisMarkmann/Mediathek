@@ -283,7 +283,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                 entferneVormerkKarte(medium, kunde);
             }
         } catch (ProtokollierException pe) {
-            // TODO Exception handling: Display Info to the user? --> Exception to GUI
+           throw pe;
         } finally {
             // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
             informiereUeberAenderung();
@@ -291,7 +291,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
     }
 
     @Override
-    public void vormerkenAn(Kunde kunde, List<Medium> medien) throws ProtokollierException {
+    public void vormerkenAn(Kunde kunde, List<Medium> medien) throws ProtokollierException, VormerkException {
 
         assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 
@@ -306,9 +306,9 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                 }
                 _protokollierer.protokolliere(VerleihProtokollierer.VormerkEreignis.VORMERKUNG, vormerkKarte);
             } catch (VormerkException e) {
-                // TODO Exception handling
+                throw e;
             } catch (ProtokollierException pe) {
-                // TODO Exception handling: Display Info to the user? --> Exception to GUI
+                throw pe;
             } finally {
                 // TODO Testen: Was passiert wenn das Protokollieren mitten in der Schleife schief geht?
                 informiereUeberAenderung();
