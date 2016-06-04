@@ -16,7 +16,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class AusleiheMedienTableModel extends AbstractTableModel
+ class AusleiheMedienTableModel extends AbstractTableModel
 {
     private static final long serialVersionUID = 1L;
 
@@ -89,7 +89,7 @@ public class AusleiheMedienTableModel extends AbstractTableModel
      * 
      * @require zeileExistiert(zeile)
      */
-    public Medium getMediumFuerZeile(int zeile)
+    Medium getMediumFuerZeile(int zeile)
     {
         assert zeileExistiert(
                 zeile) : "Vorbedingung verletzt: zeileExistiert(zeile)";
@@ -102,7 +102,7 @@ public class AusleiheMedienTableModel extends AbstractTableModel
      * 
      * @param zeile Die Nummer der Tabellenzeile
      */
-    public boolean zeileExistiert(int zeile)
+    boolean zeileExistiert(int zeile)
     {
         boolean result = false;
         if ((zeile < _medienListe.size()) && (zeile >= 0))

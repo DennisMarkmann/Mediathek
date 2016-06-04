@@ -9,7 +9,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class VormerkMedienFormatierer
+ class VormerkMedienFormatierer
 {
 
     private final Kunde _entleiher;
@@ -30,7 +30,7 @@ public class VormerkMedienFormatierer
      * 
      * @require medium != null
      */
-    public VormerkMedienFormatierer(Medium medium, Kunde entleiher,
+    VormerkMedienFormatierer(Medium medium, Kunde entleiher,
             Kunde vormerker1, Kunde vormerker2, Kunde vormerker3)
     {
         assert medium != null : "@require (medium != null)";

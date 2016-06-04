@@ -64,7 +64,7 @@ public class VormerkKarte {
         return this.get_vormerkerListe().peek().equals(kunde);
     }
 
-    public Medium get_medium() {
+    Medium get_medium() {
         return _medium;
     }
 
@@ -115,10 +115,6 @@ public class VormerkKarte {
             }
         }
         return false;
-    }
-
-    public void set_vormerkerListe(ArrayBlockingQueue<Kunde> _vormerkerListe) {
-        this._vormerkerListe = _vormerkerListe;
     }
 
     /**

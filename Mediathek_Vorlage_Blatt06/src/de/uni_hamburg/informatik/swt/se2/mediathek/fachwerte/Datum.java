@@ -207,7 +207,7 @@ public final class Datum implements Comparable<Datum>
      * @require tage >= 0
      * @ensure result != null
      */
-    public Datum plus(int tage)
+    Datum plus(int tage)
     {
         assert tage >= 0 : "Vorbedingung verletzt: tage >= 0";
         Datum datum = null;
@@ -228,7 +228,7 @@ public final class Datum implements Comparable<Datum>
      * 
      * @return den Tag vor diesem Tag.
      */
-    public Datum vorherigerTag()
+    Datum vorherigerTag()
     {
         return this.minus(1);
     }
@@ -238,7 +238,7 @@ public final class Datum implements Comparable<Datum>
      * 
      * @return den Tag nach diesem Tag.
      */
-    public Datum naechsterTag()
+    Datum naechsterTag()
     {
         return this.plus(1);
     }

@@ -17,7 +17,7 @@ public class ProtokollierException extends Exception
      * 
      * @param message Eine Fehlerbeschreibung.
      */
-    public ProtokollierException(String message)
+    ProtokollierException(String message)
     {
         super(message);
     }

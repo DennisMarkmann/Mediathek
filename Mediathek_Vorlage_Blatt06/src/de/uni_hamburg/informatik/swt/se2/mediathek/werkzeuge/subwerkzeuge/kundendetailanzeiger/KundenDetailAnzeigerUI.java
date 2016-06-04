@@ -18,7 +18,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.UIConstants;
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class KundenDetailAnzeigerUI
+ class KundenDetailAnzeigerUI
 {
     private JPanel _hauptPanel;
     private JTextArea _kundenAnzeigerTextArea;

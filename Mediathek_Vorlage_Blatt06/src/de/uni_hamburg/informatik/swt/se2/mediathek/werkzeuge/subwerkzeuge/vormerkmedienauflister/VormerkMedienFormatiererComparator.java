@@ -10,7 +10,7 @@ import java.util.Comparator;
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class VormerkMedienFormatiererComparator
+ class VormerkMedienFormatiererComparator
         implements Comparator<VormerkMedienFormatierer>, Serializable
 {
 

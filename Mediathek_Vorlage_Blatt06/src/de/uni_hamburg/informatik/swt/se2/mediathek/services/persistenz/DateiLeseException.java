@@ -21,7 +21,7 @@ public class DateiLeseException extends IOException
      * @param message Eine beschreibung des Fehlers.
      * 
      */
-    public DateiLeseException(String message)
+    DateiLeseException(String message)
     {
         super(message);
     }

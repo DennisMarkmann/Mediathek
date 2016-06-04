@@ -19,7 +19,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Verleihkarte;
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class VerleihkartenTableModel extends AbstractTableModel
+ class VerleihkartenTableModel extends AbstractTableModel
 {
     private static final long serialVersionUID = 1L;
 
@@ -104,7 +104,7 @@ public class VerleihkartenTableModel extends AbstractTableModel
      * 
      * @ensure result != null
      */
-    public Verleihkarte getVerleihkartenFuerZeile(int zeile)
+    Verleihkarte getVerleihkartenFuerZeile(int zeile)
     {
         assert zeileExistiert(
                 zeile) : "Vorbedingung verletzt: zeileExistiert(zeile)";
@@ -135,7 +135,7 @@ public class VerleihkartenTableModel extends AbstractTableModel
      * 
      * @param zeile Die Nummer der Tabellenzeile
      */
-    public boolean zeileExistiert(int zeile)
+    private boolean zeileExistiert(int zeile)
     {
         boolean result = false;
         if ((zeile < _verleihkartenListe.size()) && (zeile >= 0))

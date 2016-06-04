@@ -9,7 +9,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class AusleiheMedienFormatierer
+ class AusleiheMedienFormatierer
 {
 
     private final Medium _medium;
@@ -29,7 +29,7 @@ public class AusleiheMedienFormatierer
      * 
      * @require medium != null
      */
-    public AusleiheMedienFormatierer(Medium medium, boolean istVerliehen,
+    AusleiheMedienFormatierer(Medium medium, boolean istVerliehen,
             Kunde ersterVormerker)
     {
         assert medium != null : "Vorbedingung verletzt: medium != null";

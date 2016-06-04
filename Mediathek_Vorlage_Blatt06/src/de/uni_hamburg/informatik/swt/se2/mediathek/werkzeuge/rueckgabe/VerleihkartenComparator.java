@@ -14,7 +14,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.subwerkzeuge.kunden
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class VerleihkartenComparator
+ class VerleihkartenComparator
         implements Comparator<Verleihkarte>, Serializable
 {
     private static final long serialVersionUID = 1L;

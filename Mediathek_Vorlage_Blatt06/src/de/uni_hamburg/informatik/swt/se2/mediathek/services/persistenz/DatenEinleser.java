@@ -139,7 +139,7 @@ public class DatenEinleser
      *
      * @return true wenn eingelesen wurde, sonst false .
      */
-    public boolean wurdeEingelesen()
+    private boolean wurdeEingelesen()
     {
         return _kunden != null;
     }

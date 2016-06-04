@@ -15,7 +15,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Kunde;
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class KundenTableModel extends AbstractTableModel
+ class KundenTableModel extends AbstractTableModel
 {
     private static final long serialVersionUID = 1L;
 
@@ -85,7 +85,7 @@ public class KundenTableModel extends AbstractTableModel
      * @require zeileExistiert(zeile)
      * @ensure result != null
      */
-    public Kunde getKundeFuerZeile(int zeile)
+    Kunde getKundeFuerZeile(int zeile)
     {
         assert zeileExistiert(
                 zeile) : "Vorbedingung verletzt: zeileExistiert(zeile)";
@@ -99,7 +99,7 @@ public class KundenTableModel extends AbstractTableModel
      * @param zeile Die Nummer der Tabellenzeile
      * @return true, wenn die angegebene Zeile existiert, sonst false.
      */
-    public boolean zeileExistiert(int zeile)
+    boolean zeileExistiert(int zeile)
     {
         boolean result = false;
         if ((zeile < _kundenListe.size()) && (zeile >= 0))

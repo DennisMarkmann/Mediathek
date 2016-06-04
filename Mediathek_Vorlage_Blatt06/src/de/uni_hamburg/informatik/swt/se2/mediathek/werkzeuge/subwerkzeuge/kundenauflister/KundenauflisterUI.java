@@ -19,7 +19,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.UIConstants;
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class KundenauflisterUI
+ class KundenauflisterUI
 {
     private KundenTableModel _kundenTableModel;
     private JPanel _hauptPanel;

@@ -73,7 +73,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
     private void entferneVormerkKarte(Medium medium, Kunde kunde) throws ProtokollierException {
         VormerkKarte vormerkKarte = this.getVormerkKarteFuer(medium);
         if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(1).equals(kunde)) {
-            _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_ENTFERNUNG, vormerkKarte);
+            _protokollierer.protokolliere(VerleihProtokollierer.VormerkEreignis.ENTFERNUNG, vormerkKarte);
             vormerkKarte.verleiheAnVormerker();
             if (vormerkKarte.get_vormerkerListe().size() == 0){
                 _vormerkKarten.remove(vormerkKarte);
@@ -219,7 +219,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
         for (Medium medium : medien) {
             Verleihkarte verleihkarte = _verleihkarten.get(medium);
             _verleihkarten.remove(medium);
-            _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_RUECKGABE, verleihkarte);
+            _protokollierer.protokolliere(VerleihProtokollierer.VerleihEreignis.RUECKGABE, verleihkarte);
         }
 
         informiereUeberAenderung();
@@ -280,7 +280,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                 Verleihkarte verleihkarte = new Verleihkarte(kunde, medium, ausleihDatum);
 
                 _verleihkarten.put(medium, verleihkarte);
-                _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_AUSLEIHE, verleihkarte);
+                _protokollierer.protokolliere(VerleihProtokollierer.VerleihEreignis.AUSLEIHE, verleihkarte);
                 entferneVormerkKarte(medium, kunde);
             }
         } catch (ProtokollierException pe) {
@@ -302,12 +302,10 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
                 if (vormerkKarte == null) {
                     vormerkKarte = new VormerkKarte(medium, kunde);
                     _vormerkKarten.put(medium, vormerkKarte);
-                    _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_VORMERKUNG, vormerkKarte);
                 } else {
-
                     vormerkKarte.addVormerker(kunde);
-                    _protokollierer.protokolliere(VerleihProtokollierer.EREIGNIS_VORMERKUNG, vormerkKarte);
                 }
+                _protokollierer.protokolliere(VerleihProtokollierer.VormerkEreignis.VORMERKUNG, vormerkKarte);
             } catch (VormerkException e) {
                 e.printStackTrace();
             } catch (ProtokollierException pe) {

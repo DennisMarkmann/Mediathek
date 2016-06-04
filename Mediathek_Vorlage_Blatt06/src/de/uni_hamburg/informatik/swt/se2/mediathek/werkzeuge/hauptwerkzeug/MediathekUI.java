@@ -23,10 +23,10 @@ class MediathekUI
 {
     // Die Bezeichner der Buttons, werden auch als Schlüssel für das CardLayout
     // verwendet.
-    public static final String AUSLEIHE = "Ausleihe-Ansicht";
-    public static final String NAME = "SE2-Mediathek 2016";
-    public static final String RUECKGABE = "Rückgabe-Ansicht";
-    public static final String VORMERKEN = "Vormerk-Ansicht";
+    private static final String AUSLEIHE = "Ausleihe-Ansicht";
+    private static final String NAME = "SE2-Mediathek 2016";
+    private static final String RUECKGABE = "Rückgabe-Ansicht";
+    private static final String VORMERKEN = "Vormerk-Ansicht";
 
     private JButton _ausleiheButton;
     private JPanel _ausleihePanel;
