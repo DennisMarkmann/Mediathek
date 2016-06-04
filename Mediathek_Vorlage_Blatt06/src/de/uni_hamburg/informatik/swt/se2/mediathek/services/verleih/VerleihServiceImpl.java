@@ -82,7 +82,7 @@ public class VerleihServiceImpl extends AbstractObservableService implements Ver
  * 
  * @throws ProtokollierException falls zum Beispiel die Datei gesperrt ist in die protokolliert werden soll.
  */
-    private void entferneVormerkKarte(Medium medium, Kunde kunde) throws ProtokollierException {
+    void entferneVormerkKarte(Medium medium, Kunde kunde) throws ProtokollierException {
         VormerkKarte vormerkKarte = this.getVormerkKarteFuer(medium);
         if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(0).equals(kunde)) {
             _protokollierer.protokolliere(VerleihProtokollierer.VormerkEreignis.ENTFERNUNG, vormerkKarte);
