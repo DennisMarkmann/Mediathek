@@ -112,12 +112,24 @@ public class VormerkKarte
         return _vormerkerListe;
     }
 
+    /**
+     * Gibt für das Protokoll einen String zurück, der aus dem ersten Kunden und dem Medium besteht.
+     * 
+     * @return String, der aus dem ersten Kunden und dem Medium besteht.
+     */
+    
     public String getFormatiertenString()
     {
         return "Kunde: \"" + _vormerkerListe.peek() + "\" Medium: \"" + _medium
                 + "\"";
     }
 
+    /**
+     * Gibt eine ArrayList zurück, die alle Kunden beinhaltet.
+     * 
+     * @return ArrayList, die alle Kunden beinhaltet.
+     */
+    
     public ArrayList<Kunde> gibAlleKunden()
     {
         ArrayList<Kunde> kunden = new ArrayList<Kunde>();
@@ -136,6 +148,13 @@ public class VormerkKarte
         return kunden;
     }
 
+    /**
+     * Gibt den Kunden zurück, der sich an dem angegebenen Index befindet.
+     * @param index des Kunden der returned werden soll.
+     * 
+     * @return Kunde an dem angegebenen Index.
+     */
+    
     public Kunde gibKundeFuerIndex(int index)
     {
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
@@ -147,18 +166,37 @@ public class VormerkKarte
         return kunde;
     }
 
+    /**
+     * Prüft ob die Liste 3 Einträge hat / voll ist.
+     * 
+     * @return boolean ob die Liste voll ist oder nicht.
+     */
+    
     public boolean istKomplettVorgemerkt()
     {
         return 3 <= this.get_vormerkerListe()
             .size();
     }
 
+    /**
+     * Prüft ob die Liste leer ist.
+     * 
+     * @return boolean ob die Liste leer ist oder nicht.
+     */
+    
     public boolean istListeEmpty()
     {
         return 0 == this.get_vormerkerListe()
             .size();
     }
 
+    /**
+     * Prüft ob der angegebene Kunde sich bereits in der Liste befindet.
+     * 
+     * @param kunde auf den geprüft wird.
+     * @return boolean ob der Kunde sich in der Liste befindet oder nicht.
+     */
+    
     public boolean istVorgemerktVonKunde(Kunde kunde)
     {
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
