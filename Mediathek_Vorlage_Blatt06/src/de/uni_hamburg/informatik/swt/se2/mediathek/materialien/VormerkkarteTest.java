@@ -15,7 +15,6 @@ public class VormerkkarteTest {
     private Kunde _kunde1;
     private Kunde _kunde2;
     private Kunde _kunde3;
-    private Kunde _kunde4;
     private Medium _medium;
     private VormerkKarte _vormerkkarte;
 
@@ -24,13 +23,48 @@ public class VormerkkarteTest {
         _kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
         _kunde2 = new Kunde(new Kundennummer(123452), "ich2", "du2");
         _kunde3 = new Kunde(new Kundennummer(123453), "ich3", "du3");
-        _kunde4 = new Kunde(new Kundennummer(123454), "ich4", "du4");
         _vormerkkarte = new VormerkKarte(_medium, _kunde1);
     }
 
     @Test
     public void testGetMedium() {
         assertEquals(_medium, _vormerkkarte.get_medium());
+    }
+
+    @Test
+    public void testKonstruktor() {
+
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.peek());
+        assertEquals(_medium, _vormerkkarte.get_medium());
+    }
+
+    @Test
+    public void testZweiterHinzugefügterKundeIstVorhanden() throws VormerkException {
+        _vormerkkarte.addVormerker(_kunde2);
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.poll());
+        assertEquals(_kunde2, vormerkerListe.poll());
+    }
+
+    @Test
+    public void testDritterHinzugefügterKundeIstVorhanden() throws VormerkException {
+        _vormerkkarte.addVormerker(_kunde2);
+        _vormerkkarte.addVormerker(_kunde3);
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.poll());
+        assertEquals(_kunde2, vormerkerListe.poll());
+        assertEquals(_kunde3, vormerkerListe.poll());
+    }
+
+    @Test
+    public void testSelberKundeZweimalVormerkenThrowsVormerkException() throws VormerkException {
+        _vormerkkarte.addVormerker(_kunde2);
+        _vormerkkarte.addVormerker(_kunde2);
+        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        assertEquals(_kunde1, vormerkerListe.poll());
+        assertEquals(_kunde2, vormerkerListe.poll());
+        assertEquals(null, vormerkerListe.poll());
     }
 
     @Test
@@ -41,12 +75,8 @@ public class VormerkkarteTest {
     }
 
     @Test
-    public void testeVerleiheAnVormerker() {
-        try {
-            _vormerkkarte.addVormerker(_kunde2);
-        } catch (VormerkException e) {
-            // TODO Exception handling
-        }
+    public void testeVerleiheAnVormerker() throws VormerkException {
+        _vormerkkarte.addVormerker(_kunde2);
         _vormerkkarte.verleiheAnVormerker();
         vormerkerListe = _vormerkkarte.get_vormerkerListe();
         assertEquals(_kunde2, vormerkerListe.peek());
