@@ -150,12 +150,11 @@ public class AusleihWerkzeug
         for (Medium medium : medien)
         {
             VormerkKarte vormerkKarte = _verleihService
-                    .getVormerkKarteFuer(medium);
+                .getVormerkKarteFuer(medium);
             ArrayBlockingQueue<Kunde> vormerkListe = null;
             if (vormerkKarte != null)
             {
-                vormerkListe = vormerkKarte
-                        .get_vormerkerListe();
+                vormerkListe = vormerkKarte.getVormerkerListe();
             }
             if (vormerkListe == null)
             {

@@ -85,7 +85,7 @@ public class VormerkKarte
 
     public boolean equalsErsterVormerker(Kunde vormerker)
     {
-        return this.get_vormerkerListe()
+        return this.getVormerkerListe()
             .peek()
             .equals(vormerker);
     }
@@ -95,7 +95,7 @@ public class VormerkKarte
      * 
      * @return mediun zu dem die Vormerkungen gespeichert werden sollen.
      */
-    Medium get_medium()
+    Medium getMedium()
     {
         return _medium;
     }
@@ -107,7 +107,7 @@ public class VormerkKarte
      * 
      **/
 
-    public ArrayBlockingQueue<Kunde> get_vormerkerListe()
+    public ArrayBlockingQueue<Kunde> getVormerkerListe()
     {
         return _vormerkerListe;
     }
@@ -174,7 +174,7 @@ public class VormerkKarte
     
     public boolean istKomplettVorgemerkt()
     {
-        return 3 <= this.get_vormerkerListe()
+        return 3 <= this.getVormerkerListe()
             .size();
     }
 
@@ -186,7 +186,7 @@ public class VormerkKarte
     
     public boolean istListeEmpty()
     {
-        return 0 == this.get_vormerkerListe()
+        return 0 == this.getVormerkerListe()
             .size();
     }
 

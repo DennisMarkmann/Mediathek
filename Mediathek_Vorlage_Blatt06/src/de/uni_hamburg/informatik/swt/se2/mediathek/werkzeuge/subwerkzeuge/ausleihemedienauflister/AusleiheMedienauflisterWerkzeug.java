@@ -159,7 +159,7 @@ public class AusleiheMedienauflisterWerkzeug extends ObservableSubWerkzeug
             Kunde ersterVormerker = null;
             if (vormerkKarte != null)
             {
-                ersterVormerker = vormerkKarte.get_vormerkerListe()
+                ersterVormerker = vormerkKarte.getVormerkerListe()
                     .peek();
             }
             

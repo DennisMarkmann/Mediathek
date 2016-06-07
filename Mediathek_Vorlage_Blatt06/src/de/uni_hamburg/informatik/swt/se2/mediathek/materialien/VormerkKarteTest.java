@@ -34,16 +34,16 @@ public class VormerkKarteTest
     @Test
     public void testGetMedium()
     {
-        assertEquals(_medium, _vormerkkarte.get_medium());
+        assertEquals(_medium, _vormerkkarte.getMedium());
     }
 
     @Test
     public void testKonstruktor()
     {
 
-        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        vormerkerListe = _vormerkkarte.getVormerkerListe();
         assertEquals(_kunde1, vormerkerListe.peek());
-        assertEquals(_medium, _vormerkkarte.get_medium());
+        assertEquals(_medium, _vormerkkarte.getMedium());
     }
 
     @Test
@@ -51,7 +51,7 @@ public class VormerkKarteTest
             throws VormerkException
     {
         _vormerkkarte.addVormerker(_kunde2);
-        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        vormerkerListe = _vormerkkarte.getVormerkerListe();
         assertEquals(_kunde1, vormerkerListe.poll());
         assertEquals(_kunde2, vormerkerListe.poll());
     }
@@ -62,7 +62,7 @@ public class VormerkKarteTest
     {
         _vormerkkarte.addVormerker(_kunde2);
         _vormerkkarte.addVormerker(_kunde3);
-        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        vormerkerListe = _vormerkkarte.getVormerkerListe();
         assertEquals(_kunde1, vormerkerListe.poll());
         assertEquals(_kunde2, vormerkerListe.poll());
         assertEquals(_kunde3, vormerkerListe.poll());
@@ -74,7 +74,7 @@ public class VormerkKarteTest
     {
         _vormerkkarte.addVormerker(_kunde2);
         _vormerkkarte.addVormerker(_kunde2);
-        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        vormerkerListe = _vormerkkarte.getVormerkerListe();
         assertEquals(_kunde1, vormerkerListe.poll());
         assertEquals(_kunde2, vormerkerListe.poll());
         assertEquals(null, vormerkerListe.poll());
@@ -84,7 +84,7 @@ public class VormerkKarteTest
     public void testAddVormerker()
     {
 
-        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        vormerkerListe = _vormerkkarte.getVormerkerListe();
         assertEquals(_kunde1, vormerkerListe.peek());
     }
 
@@ -93,7 +93,7 @@ public class VormerkKarteTest
     {
         _vormerkkarte.addVormerker(_kunde2);
         _vormerkkarte.verleiheAnVormerker();
-        vormerkerListe = _vormerkkarte.get_vormerkerListe();
+        vormerkerListe = _vormerkkarte.getVormerkerListe();
         assertEquals(_kunde2, vormerkerListe.peek());
     }
 

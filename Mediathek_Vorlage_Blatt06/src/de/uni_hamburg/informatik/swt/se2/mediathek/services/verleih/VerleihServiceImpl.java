@@ -95,7 +95,7 @@ public class VerleihServiceImpl extends AbstractObservableService
                     VerleihProtokollierer.VormerkEreignis.ENTFERNUNG,
                     vormerkKarte);
             vormerkKarte.verleiheAnVormerker();
-            if (vormerkKarte.get_vormerkerListe()
+            if (vormerkKarte.getVormerkerListe()
                 .size() == 0)
             {
                 _vormerkKarten.remove(vormerkKarte);
