@@ -78,15 +78,16 @@ public class VerleihServiceImpl extends AbstractObservableService
 
     /**
      *  Entfernt VormerkKarte.
-     *  
-     * @param medium fuer das die Vormerkkarte entfernt werden soll. 
+     *
+     * @param medium fuer das die Vormerkkarte entfernt werden soll.
      * @param kunde auf den geprueft wird ob er sich an Index 0 der Liste befindet.
-     * 
+     *
      * @throws ProtokollierException falls zum Beispiel die Datei gesperrt ist in die protokolliert werden soll.
      */
     void entferneVormerkKarte(Medium medium, Kunde kunde)
             throws ProtokollierException
     {
+        //TODO assert
         VormerkKarte vormerkKarte = this.getVormerkKarteFuer(medium);
         if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(0)
             .equals(kunde))
@@ -105,7 +106,7 @@ public class VerleihServiceImpl extends AbstractObservableService
 
     /**
      * Erzeugt eine neue HashMap aus dem Initialbestand.
-     * 
+     *
      * @param initialBestand der fuer die Verleihkarten verwendet werden soll.
      * @return HashMap<Medium, Verleihkarte> verleihkarten fuer die Bestand erzeugt werden soll.
      */
@@ -177,7 +178,7 @@ public class VerleihServiceImpl extends AbstractObservableService
 
     /**
      * Gibt die VormerkKarte für das Medium.
-     * 
+     *
      * @param medium Medium fuer das eine Vormerkkarte gesucht werden soll.
      * @return VormerkKarte die zu dem Medium gefunden wurde.
      */
@@ -255,7 +256,7 @@ public class VerleihServiceImpl extends AbstractObservableService
     public boolean medienImBestand(List<Medium> medien)
     {
         assert medien != null : "Vorbedingung verletzt: medien != null";
-        assert !medien.isEmpty() : "Vorbedingung verletzt: !medien.isEmpty()";
+        assert!medien.isEmpty() : "Vorbedingung verletzt: !medien.isEmpty()";
 
         boolean result = true;
         for (Medium medium : medien)
@@ -385,7 +386,7 @@ public class VerleihServiceImpl extends AbstractObservableService
 
     /**
      * Setzt eine Vormerkung von einem Kunden an ein Medium.
-     * 
+     *
      * @param kunde für den die medien vorgemerkt werden sollen.
      * @param medien die für den Kunden vorgemerkt werden sollen.
      */
@@ -394,7 +395,7 @@ public class VerleihServiceImpl extends AbstractObservableService
     public void vormerkenAn(Kunde kunde, List<Medium> medien)
             throws ProtokollierException, VormerkException
     {
-
+        //TODO assert + auch prüfung wie in GUI ob vormerken möglich
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 

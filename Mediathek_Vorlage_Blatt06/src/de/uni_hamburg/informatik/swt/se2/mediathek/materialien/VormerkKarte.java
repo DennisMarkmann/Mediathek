@@ -43,6 +43,7 @@ public class VormerkKarte
      */
     public VormerkKarte(Medium medium, Kunde kunde) throws VormerkException
     {
+        //TODO assert
         _medium = medium;
         _vormerkerListe = new ArrayBlockingQueue<Kunde>(3);
         this.addVormerker(kunde);
@@ -59,6 +60,7 @@ public class VormerkKarte
      */
     public void addVormerker(Kunde vormerker) throws VormerkException
     {
+        //TODO throw exception and use it, for >= 3 / vorgemerkt
         if (istVorgemerktVonKunde(vormerker) || _vormerkerListe.size() >= 3)
         {
             return;
@@ -76,7 +78,7 @@ public class VormerkKarte
 
     /**
      * Pruefung ob erster Eintrag der Liste dem angegebenen
-     * 
+     *
      * @param vormerker
      *            fuer den der erste Wert der Liste geprueft werden soll.
      * @return boolean: true falls Vormerker equals erster Eintrag der Liste,
@@ -85,39 +87,18 @@ public class VormerkKarte
 
     public boolean equalsErsterVormerker(Kunde vormerker)
     {
+        //TODO assert
         return this.getVormerkerListe()
             .peek()
             .equals(vormerker);
     }
 
     /**
-     * Gibt das medium zurück, zu dem diese Vormerkung gehört.
-     * 
-     * @return mediun zu dem die Vormerkungen gespeichert werden sollen.
-     */
-    Medium getMedium()
-    {
-        return _medium;
-    }
-
-    /**
-     * Gibt die Vormerkliste zurück.
-     * 
-     * @return vormerkliste in der die Vormerkungen stehen.
-     * 
-     **/
-
-    public ArrayBlockingQueue<Kunde> getVormerkerListe()
-    {
-        return _vormerkerListe;
-    }
-
-    /**
      * Gibt für das Protokoll einen String zurück, der aus dem ersten Kunden und dem Medium besteht.
-     * 
+     *
      * @return String, der aus dem ersten Kunden und dem Medium besteht.
      */
-    
+
     public String getFormatiertenString()
     {
         return "Kunde: \"" + _vormerkerListe.peek() + "\" Medium: \"" + _medium
@@ -125,13 +106,40 @@ public class VormerkKarte
     }
 
     /**
+     * Gibt das medium zurück, zu dem diese Vormerkung gehört.
+     *
+     * @return mediun zu dem die Vormerkungen gespeichert werden sollen.
+     */
+    Medium getMedium()
+    {
+        Medium medium = _medium;
+        return medium;
+    }
+
+    /**
+     * Gibt die Vormerkliste zurück.
+     *
+     * @return vormerkliste in der die Vormerkungen stehen.
+     *
+     **/
+
+    public ArrayBlockingQueue<Kunde> getVormerkerListe()
+    {
+        //TODO assert
+        ArrayBlockingQueue<Kunde> vormerkerListe = new ArrayBlockingQueue<Kunde>(
+                3, true, _vormerkerListe);
+        return vormerkerListe;
+    }
+
+    /**
      * Gibt eine ArrayList zurück, die alle Kunden beinhaltet.
-     * 
+     *
      * @return ArrayList, die alle Kunden beinhaltet.
      */
-    
+
     public ArrayList<Kunde> gibAlleKunden()
     {
+        //TODO remove
         ArrayList<Kunde> kunden = new ArrayList<Kunde>();
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         for (int i = 0; i < 3; i++)
@@ -151,12 +159,13 @@ public class VormerkKarte
     /**
      * Gibt den Kunden zurück, der sich an dem angegebenen Index befindet.
      * @param index des Kunden der returned werden soll.
-     * 
+     *
      * @return Kunde an dem angegebenen Index.
      */
-    
+
     public Kunde gibKundeFuerIndex(int index)
     {
+        //TODO assert <=3
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         Kunde kunde = null;
         for (int i = 0; i <= index; i++)
@@ -168,10 +177,10 @@ public class VormerkKarte
 
     /**
      * Prüft ob die Liste 3 Einträge hat / voll ist.
-     * 
+     *
      * @return boolean ob die Liste voll ist oder nicht.
      */
-    
+
     public boolean istKomplettVorgemerkt()
     {
         return 3 <= this.getVormerkerListe()
@@ -180,10 +189,10 @@ public class VormerkKarte
 
     /**
      * Prüft ob die Liste leer ist.
-     * 
+     *
      * @return boolean ob die Liste leer ist oder nicht.
      */
-    
+
     public boolean istListeEmpty()
     {
         return 0 == this.getVormerkerListe()
@@ -192,13 +201,14 @@ public class VormerkKarte
 
     /**
      * Prüft ob der angegebene Kunde sich bereits in der Liste befindet.
-     * 
+     *
      * @param kunde auf den geprüft wird.
      * @return boolean ob der Kunde sich in der Liste befindet oder nicht.
      */
-    
+
     public boolean istVorgemerktVonKunde(Kunde kunde)
     {
+        //TODO assert
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         for (int i = 0; i < 3; i++)
         {

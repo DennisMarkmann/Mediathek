@@ -75,6 +75,22 @@ public class VerleihServiceImplTest
     }
 
     @Test
+    public void testeGetVormerkKarteFuer()
+    {
+        VormerkKarte vormerkKarteTest = null;
+        for (Medium medium : _medienListe)
+        {
+            _vormerkKarte = _service.getVormerkKarteFuer(medium);
+        }
+
+        for (Medium medium : _medienListe)
+        {
+            vormerkKarteTest = _service.getVormerkKarteFuer(medium);
+        }
+        assertEquals(_vormerkKarte, vormerkKarteTest);
+    }
+
+    @Test
     public void testeNachInitialisierungIstNichtsVerliehen() throws Exception
     {
         assertTrue(_service.getVerleihkarten()
@@ -82,6 +98,35 @@ public class VerleihServiceImplTest
         assertFalse(_service.istVerliehen(_medienListe.get(0)));
         assertFalse(_service.sindAlleVerliehen(_medienListe));
         assertTrue(_service.sindAlleNichtVerliehen(_medienListe));
+    }
+
+    @Test
+    public void testeVerleihEreignisBeobachter() throws ProtokollierException
+    {
+        final boolean ereignisse[] = new boolean[1];
+        ereignisse[0] = false;
+        ServiceObserver beobachter = new ServiceObserver()
+        {
+            @Override
+            public void reagiereAufAenderung()
+            {
+                ereignisse[0] = true;
+            }
+        };
+        _service.verleiheAn(_kunde,
+                Collections.singletonList(_medienListe.get(0)), _datum);
+        assertFalse(ereignisse[0]);
+
+        _service.registriereBeobachter(beobachter);
+        _service.verleiheAn(_kunde,
+                Collections.singletonList(_medienListe.get(1)), _datum);
+        assertTrue(ereignisse[0]);
+
+        _service.entferneBeobachter(beobachter);
+        ereignisse[0] = false;
+        _service.verleiheAn(_kunde,
+                Collections.singletonList(_medienListe.get(2)), _datum);
+        assertFalse(ereignisse[0]);
     }
 
     @Test
@@ -137,46 +182,17 @@ public class VerleihServiceImplTest
     }
 
     @Test
-    public void testeVerleihEreignisBeobachter() throws ProtokollierException
-    {
-        final boolean ereignisse[] = new boolean[1];
-        ereignisse[0] = false;
-        ServiceObserver beobachter = new ServiceObserver()
-        {
-            @Override
-            public void reagiereAufAenderung()
-            {
-                ereignisse[0] = true;
-            }
-        };
-        _service.verleiheAn(_kunde,
-                Collections.singletonList(_medienListe.get(0)), _datum);
-        assertFalse(ereignisse[0]);
-
-        _service.registriereBeobachter(beobachter);
-        _service.verleiheAn(_kunde,
-                Collections.singletonList(_medienListe.get(1)), _datum);
-        assertTrue(ereignisse[0]);
-
-        _service.entferneBeobachter(beobachter);
-        ereignisse[0] = false;
-        _service.verleiheAn(_kunde,
-                Collections.singletonList(_medienListe.get(2)), _datum);
-        assertFalse(ereignisse[0]);
-    }
-
-    @Test
-    public void testeVormerkenFuerEinenKunden()
+    public void testeVormerkeException()
             throws ProtokollierException, VormerkException
     {
+        ExpectedException thrown = ExpectedException.none();
+
         _service.vormerkenAn(_vormerkkunde1, _medienListe);
+        _service.vormerkenAn(_vormerkkunde2, _medienListe);
+        _service.vormerkenAn(_vormerkkunde3, _medienListe);
+        _service.vormerkenAn(_vormerkkunde4, _medienListe);
 
-        for (Medium medium : _medienListe)
-        {
-            _vormerkKarte = _service.getVormerkKarteFuer(medium);
-            assertTrue(_vormerkKarte.equalsErsterVormerker(_vormerkkunde1));
-        }
-
+        thrown.expect(VormerkException.class);
     }
 
     @Test
@@ -199,49 +215,17 @@ public class VerleihServiceImplTest
     }
 
     @Test
-    public void testeVormerkeException()
+    public void testeVormerkenFuerEinenKunden()
             throws ProtokollierException, VormerkException
     {
-        ExpectedException thrown = ExpectedException.none();
-
-        _service.vormerkenAn(_vormerkkunde1, _medienListe);
-        _service.vormerkenAn(_vormerkkunde2, _medienListe);
-        _service.vormerkenAn(_vormerkkunde3, _medienListe);
-        _service.vormerkenAn(_vormerkkunde4, _medienListe);
-
-        thrown.expect(VormerkException.class);
-    }
-
-    public void testeVormerkenDoppeltFuerKunden()
-            throws ProtokollierException, VormerkException
-    {
-        _service.vormerkenAn(_vormerkkunde1, _medienListe);
-        _service.vormerkenAn(_vormerkkunde2, _medienListe);
         _service.vormerkenAn(_vormerkkunde1, _medienListe);
 
         for (Medium medium : _medienListe)
         {
             _vormerkKarte = _service.getVormerkKarteFuer(medium);
+            assertTrue(_vormerkKarte.equalsErsterVormerker(_vormerkkunde1));
         }
 
-        assertFalse(_vormerkKarte.gibKundeFuerIndex(2)
-            .equals(_vormerkkunde1));
-    }
-
-    @Test
-    public void testeGetVormerkKarteFuer()
-    {
-        VormerkKarte vormerkKarteTest = null;
-        for (Medium medium : _medienListe)
-        {
-            _vormerkKarte = _service.getVormerkKarteFuer(medium);
-        }
-
-        for (Medium medium : _medienListe)
-        {
-            vormerkKarteTest = _service.getVormerkKarteFuer(medium);
-        }
-        assertEquals(_vormerkKarte, vormerkKarteTest);
     }
 
 }
