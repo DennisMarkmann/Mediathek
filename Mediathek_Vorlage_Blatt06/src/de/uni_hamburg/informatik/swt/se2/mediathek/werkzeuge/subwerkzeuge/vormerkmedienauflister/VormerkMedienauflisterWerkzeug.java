@@ -25,7 +25,8 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.ObservableSubWerkze
  * @author SE2-Team
  * @version SoSe 2016
  */
-public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug {
+public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug
+{
 
     private VormerkMedienauflisterUI _ui;
     private MedienbestandService _medienbestand;
@@ -41,7 +42,9 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug {
      * @require medienbestand != null
      * @require verleihService != null
      */
-    public VormerkMedienauflisterWerkzeug(MedienbestandService medienbestand, VerleihService verleihService) {
+    public VormerkMedienauflisterWerkzeug(MedienbestandService medienbestand,
+            VerleihService verleihService)
+    {
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand != null";
         assert verleihService != null : "Vorbedingung verletzt: verleihService != null";
 
@@ -68,12 +71,17 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug {
      *
      * @ensure result != null
      */
-    public List<Medium> getSelectedMedien() {
+    public List<Medium> getSelectedMedien()
+    {
         List<Medium> result = new ArrayList<Medium>();
-        int[] selectedRows = _ui.getMedienAuflisterTable().getSelectedRows();
-        VormerkMedienTableModel medienTableModel = _ui.getMedienAuflisterTableModel();
-        for (int zeile : selectedRows) {
-            if (medienTableModel.zeileExistiert(zeile)) {
+        int[] selectedRows = _ui.getMedienAuflisterTable()
+            .getSelectedRows();
+        VormerkMedienTableModel medienTableModel = _ui
+            .getMedienAuflisterTableModel();
+        for (int zeile : selectedRows)
+        {
+            if (medienTableModel.zeileExistiert(zeile))
+            {
                 Medium medium = medienTableModel.getMediumFuerZeile(zeile);
                 result.add(medium);
             }
@@ -86,31 +94,40 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug {
      *
      * @ensure result != null
      */
-    public JPanel getUIPanel() {
+    public JPanel getUIPanel()
+    {
         return _ui.getUIPanel();
     }
 
     /**
      * Registiert die Aktion, die ausgeführt wird, wenn ein Medium ausgewählt wird.
      */
-    private void registriereMedienAnzeigenAktion() {
-        _ui.getMedienAuflisterTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+    private void registriereMedienAnzeigenAktion()
+    {
+        _ui.getMedienAuflisterTable()
+            .getSelectionModel()
+            .addListSelectionListener(new ListSelectionListener()
+            {
 
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                informiereUeberAenderung();
-            }
-        });
+                @Override
+                public void valueChanged(ListSelectionEvent e)
+                {
+                    informiereUeberAenderung();
+                }
+            });
     }
 
     /**
      * Registriert die Beobacheter für die Services.
      */
-    private void registriereServiceBeobachter() {
-        ServiceObserver beobachter = new ServiceObserver() {
+    private void registriereServiceBeobachter()
+    {
+        ServiceObserver beobachter = new ServiceObserver()
+        {
 
             @Override
-            public void reagiereAufAenderung() {
+            public void reagiereAufAenderung()
+            {
                 // Wenn ein Service eine Änderung mitteilt, dann wird
                 // die angezeigte Liste aller Medien aktualisiert:
                 setzeAnzuzeigendeMedien();
@@ -123,37 +140,45 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug {
     /**
      * Registriert die Aktionen, die bei bestimmten UI-Events ausgeführt werden.
      */
-    private void registriereUIAktionen() {
+    private void registriereUIAktionen()
+    {
         registriereMedienAnzeigenAktion();
     }
 
     /**
      * Holt und setzt die Medieninformationen.
      */
-    private void setzeAnzuzeigendeMedien() {
+    private void setzeAnzuzeigendeMedien()
+    {
         List<Medium> medienListe = _medienbestand.getMedien();
         List<VormerkMedienFormatierer> medienFormatierer = new ArrayList<VormerkMedienFormatierer>();
-        for (Medium medium : medienListe) {
+        for (Medium medium : medienListe)
+        {
             Kunde entleiher = null;
             Kunde vormerker1 = null;
             Kunde vormerker2 = null;
             Kunde vormerker3 = null;
 
-            VormerkKarte vormerkKarte = _verleihService.getVormerkKarteFuer(medium);
-            Verleihkarte verleihkarte = _verleihService.getVerleihkarteFuer(medium);
-            if (verleihkarte != null) {
+            VormerkKarte vormerkKarte = _verleihService
+                .getVormerkKarteFuer(medium);
+            Verleihkarte verleihkarte = _verleihService
+                .getVerleihkarteFuer(medium);
+            if (verleihkarte != null)
+            {
                 entleiher = verleihkarte.getEntleiher();
             }
 
-            if (vormerkKarte != null) {
-                ArrayList<Kunde> vormerkerListe = vormerkKarte.gibAlleKunden();
-                vormerker1 = vormerkerListe.get(0);
-                vormerker2 = vormerkerListe.get(1);
-                vormerker3 = vormerkerListe.get(2);
+            if (vormerkKarte != null)
+            {
+                vormerker1 = vormerkKarte.gibKundeFuerIndex(0);
+                vormerker2 = vormerkKarte.gibKundeFuerIndex(1);
+                vormerker3 = vormerkKarte.gibKundeFuerIndex(2);
             }
-            medienFormatierer.add(new VormerkMedienFormatierer(medium, entleiher, vormerker1, vormerker2, vormerker3));
+            medienFormatierer.add(new VormerkMedienFormatierer(medium,
+                    entleiher, vormerker1, vormerker2, vormerker3));
 
         }
-        _ui.getMedienAuflisterTableModel().setMedien(medienFormatierer);
+        _ui.getMedienAuflisterTableModel()
+            .setMedien(medienFormatierer);
     }
 }

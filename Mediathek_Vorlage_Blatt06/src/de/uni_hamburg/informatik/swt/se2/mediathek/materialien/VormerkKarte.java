@@ -63,8 +63,8 @@ public class VormerkKarte
      */
     public void addVormerker(Kunde vormerker) throws VormerkException
     {
-        assert istVorgemerktVonKunde(vormerker) : "Vorbedingung verletzt: istVorgemerktVonKunde(vormerker)";
-        assert _vormerkerListe.size() > 2 : "Vorbedingung verletzt: _vormerkerListe.size() > 2";
+        assert !istVorgemerktVonKunde(vormerker) : "Vorbedingung verletzt: istVorgemerktVonKunde(vormerker)";
+        assert _vormerkerListe.size() <= 2 : "Vorbedingung verletzt: _vormerkerListe.size() > 2";
 
         try
         {
@@ -132,31 +132,6 @@ public class VormerkKarte
     }
 
     /**
-     * Gibt eine ArrayList zurück, die alle Kunden beinhaltet.
-     *
-     * @return ArrayList, die alle Kunden beinhaltet.
-     */
-
-    public ArrayList<Kunde> gibAlleKunden()
-    {
-        //TODO remove
-        ArrayList<Kunde> kunden = new ArrayList<Kunde>();
-        Iterator<Kunde> iterator = _vormerkerListe.iterator();
-        for (int i = 0; i < 3; i++)
-        {
-            if (iterator.hasNext())
-            {
-                kunden.add(iterator.next());
-            }
-            else
-            {
-                kunden.add(null);
-            }
-        }
-        return kunden;
-    }
-
-    /**
      * Gibt den Kunden zurück, der sich an dem angegebenen Index befindet.
      * @param index des Kunden der returned werden soll.
      *
@@ -167,12 +142,19 @@ public class VormerkKarte
 
     public Kunde gibKundeFuerIndex(int index)
     {
-        assert index > 2 : "Vorbedingung verletzt: index > 2";
+        assert index <= 2 : "Vorbedingung verletzt: index > 2";
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         Kunde kunde = null;
         for (int i = 0; i <= index; i++)
         {
-            kunde = iterator.next();
+            if (iterator.hasNext())
+            {
+                kunde = iterator.next();
+            }
+            else
+            {
+                kunde = null;
+            }
         }
         return kunde;
     }

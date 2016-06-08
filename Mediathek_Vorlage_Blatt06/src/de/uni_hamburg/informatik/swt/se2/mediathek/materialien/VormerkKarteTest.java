@@ -73,6 +73,7 @@ public class VormerkKarteTest
             throws VormerkException
     {
         _vormerkkarte.addVormerker(_kunde2);
+        //TODO fix test
         _vormerkkarte.addVormerker(_kunde2);
         vormerkerListe = _vormerkkarte.getVormerkerListe();
         assertEquals(_kunde1, vormerkerListe.poll());
@@ -102,11 +103,10 @@ public class VormerkKarteTest
     {
         _vormerkkarte.addVormerker(_kunde2);
         _vormerkkarte.addVormerker(_kunde3);
-        ArrayList<Kunde> kunden = _vormerkkarte.gibAlleKunden();
 
-        assertEquals(_kunde1, kunden.get(0));
-        assertEquals(_kunde2, kunden.get(1));
-        assertEquals(_kunde3, kunden.get(2));
+        assertEquals(_kunde1, _vormerkkarte.gibKundeFuerIndex(0));
+        assertEquals(_kunde2, _vormerkkarte.gibKundeFuerIndex(1));
+        assertEquals(_kunde3, _vormerkkarte.gibKundeFuerIndex(2));
     }
 
     @Test
