@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Datum;
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Kundennummer;
@@ -179,20 +178,6 @@ public class VerleihServiceImplTest
         assertTrue(_service.sindAlleNichtVerliehen(_medienListe));
         assertTrue(_service.getVerleihkarten()
             .isEmpty());
-    }
-
-    @Test
-    public void testeVormerkeException()
-            throws ProtokollierException, VormerkException
-    {
-        ExpectedException thrown = ExpectedException.none();
-
-        _service.vormerkenAn(_vormerkkunde1, _medienListe);
-        _service.vormerkenAn(_vormerkkunde2, _medienListe);
-        _service.vormerkenAn(_vormerkkunde3, _medienListe);
-        _service.vormerkenAn(_vormerkkunde4, _medienListe);
-
-        thrown.expect(VormerkException.class);
     }
 
     @Test

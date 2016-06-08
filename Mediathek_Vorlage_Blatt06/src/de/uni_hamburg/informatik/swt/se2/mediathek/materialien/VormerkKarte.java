@@ -57,14 +57,14 @@ public class VormerkKarte
      * @throws VormerkException
      *             Exception die geworfen wird, sollte beim Hinzufuegen eines
      *             Vormerkers etwas schief gehen.
+     * @ensure !istVorgemerktVonKunde(vormerker)
+     * @ensure _vormerkerListe.size() <= 2
+     * 
      */
     public void addVormerker(Kunde vormerker) throws VormerkException
     {
-        //TODO throw exception and use it, for >= 3 / vorgemerkt
-        if (istVorgemerktVonKunde(vormerker) || _vormerkerListe.size() >= 3)
-        {
-            return;
-        }
+        assert istVorgemerktVonKunde(vormerker) : "Vorbedingung verletzt: istVorgemerktVonKunde(vormerker)";
+        assert _vormerkerListe.size() > 2 : "Vorbedingung verletzt: _vormerkerListe.size() > 2";
 
         try
         {
@@ -161,11 +161,13 @@ public class VormerkKarte
      * @param index des Kunden der returned werden soll.
      *
      * @return Kunde an dem angegebenen Index.
+     * 
+     * @ensure index <= 2
      */
 
     public Kunde gibKundeFuerIndex(int index)
     {
-        //TODO assert <=3
+        assert index > 2 : "Vorbedingung verletzt: index > 2";
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         Kunde kunde = null;
         for (int i = 0; i <= index; i++)
