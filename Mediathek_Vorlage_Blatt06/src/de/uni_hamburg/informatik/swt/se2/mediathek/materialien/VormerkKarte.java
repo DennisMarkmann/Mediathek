@@ -40,10 +40,14 @@ public class VormerkKarte
      *             Exception die geworfen wird, sollte beim Hinzufuegen eines
      *             Vormerkers etwas schief gehen.
      *
+     * @ensure kunde != null
+     * @ensure medium != null
      */
     public VormerkKarte(Medium medium, Kunde kunde) throws VormerkException
     {
-        //TODO assert
+        assert kunde != null : "Vorbedingung verletzt: kunde != null";
+        assert medium != null : "Vorbedingung verletzt: medium != null";
+
         _medium = medium;
         _vormerkerListe = new ArrayBlockingQueue<Kunde>(3);
         this.addVormerker(kunde);
@@ -52,23 +56,27 @@ public class VormerkKarte
     /**
      * Hinzufügen eines Vormerkers nach dem FIFO-Prinzip.
      *
-     * @param vormerker
+     * @param kunde
      *            der in die Liste der vormerker hinzugefuegt werden soll.
      * @throws VormerkException
      *             Exception die geworfen wird, sollte beim Hinzufuegen eines
      *             Vormerkers etwas schief gehen.
      * @ensure !istVorgemerktVonKunde(vormerker)
      * @ensure _vormerkerListe.size() <= 2
+     * @ensure kunde != null
      * 
      */
-    public void addVormerker(Kunde vormerker) throws VormerkException
+    public void addVormerker(Kunde kunde) throws VormerkException
     {
-        assert !istVorgemerktVonKunde(vormerker) : "Vorbedingung verletzt: istVorgemerktVonKunde(vormerker)";
-        assert _vormerkerListe.size() <= 2 : "Vorbedingung verletzt: _vormerkerListe.size() > 2";
+        assert kunde != null : "Vorbedingung verletzt: kunde != null";
+        assert !istVorgemerktVonKunde(
+                kunde) : "Vorbedingung verletzt: !istVorgemerktVonKunde(vormerker)";
+        assert _vormerkerListe
+            .size() <= 2 : "Vorbedingung verletzt: _vormerkerListe.size() <= 2";
 
         try
         {
-            _vormerkerListe.put(vormerker);
+            _vormerkerListe.put(kunde);
         }
         catch (IllegalStateException | InterruptedException e)
         {
@@ -83,14 +91,16 @@ public class VormerkKarte
      *            fuer den der erste Wert der Liste geprueft werden soll.
      * @return boolean: true falls Vormerker equals erster Eintrag der Liste,
      *         sonst false.
+     * @ensure kunde != null
      */
 
-    public boolean equalsErsterVormerker(Kunde vormerker)
+    public boolean equalsErsterVormerker(Kunde kunde)
     {
-        //TODO assert
+        assert kunde != null : "Vorbedingung verletzt: kunde != null";
+
         return this.getVormerkerListe()
             .peek()
-            .equals(vormerker);
+            .equals(kunde);
     }
 
     /**
@@ -121,11 +131,12 @@ public class VormerkKarte
      *
      * @return vormerkliste in der die Vormerkungen stehen.
      *
+     * @ensure _vormerkerListe != null
      **/
 
     public ArrayBlockingQueue<Kunde> getVormerkerListe()
     {
-        //TODO assert
+        assert _vormerkerListe != null : "Vorbedingung verletzt: _vormerkerListe != null";
         ArrayBlockingQueue<Kunde> vormerkerListe = new ArrayBlockingQueue<Kunde>(
                 3, true, _vormerkerListe);
         return vormerkerListe;
@@ -142,7 +153,7 @@ public class VormerkKarte
 
     public Kunde gibKundeFuerIndex(int index)
     {
-        assert index <= 2 : "Vorbedingung verletzt: index > 2";
+        assert index <= 2 : "Vorbedingung verletzt: index <= 2";
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         Kunde kunde = null;
         for (int i = 0; i <= index; i++)
@@ -188,11 +199,16 @@ public class VormerkKarte
      *
      * @param kunde auf den geprüft wird.
      * @return boolean ob der Kunde sich in der Liste befindet oder nicht.
+     * 
+     * @ensure kunde != null
+     * @ensure _vormerkerListe != null
      */
 
     public boolean istVorgemerktVonKunde(Kunde kunde)
     {
-        //TODO assert
+        assert kunde != null : "Vorbedingung verletzt: kunde != null";
+        assert _vormerkerListe != null : "Vorbedingung verletzt: _vormerkerListe != null";
+
         Iterator<Kunde> iterator = _vormerkerListe.iterator();
         for (int i = 0; i < 3; i++)
         {

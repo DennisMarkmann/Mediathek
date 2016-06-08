@@ -70,6 +70,7 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert kundenstamm != null : "Vorbedingung verletzt: kundenstamm  != null";
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand  != null";
         assert initialBestand != null : "Vorbedingung verletzt: initialBestand  != null";
+        
         _verleihkarten = erzeugeVerleihkartenBestand(initialBestand);
         _kundenstamm = kundenstamm;
         _medienbestand = medienbestand;
@@ -83,11 +84,22 @@ public class VerleihServiceImpl extends AbstractObservableService
      * @param kunde auf den geprueft wird ob er sich an Index 0 der Liste befindet.
      *
      * @throws ProtokollierException falls zum Beispiel die Datei gesperrt ist in die protokolliert werden soll.
+     * 
+     * @ensure kunde != null
+     * @ensure medium != null
+     * @ensure kundeImBestand(kunde)
+     * @ensure mediumImBestand(medium)
      */
     void entferneVormerkKarte(Medium medium, Kunde kunde)
             throws ProtokollierException
     {
-        //TODO assert
+        assert kunde != null : "Vorbedingung verletzt: kunde != null";
+        assert medium != null : "Vorbedingung verletzt: medium != null";
+        assert kundeImBestand(
+                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: medienImBestand(medien)";
+
         VormerkKarte vormerkKarte = this.getVormerkKarteFuer(medium);
         if (vormerkKarte != null && vormerkKarte.gibKundeFuerIndex(0)
             .equals(kunde))
@@ -256,7 +268,7 @@ public class VerleihServiceImpl extends AbstractObservableService
     public boolean medienImBestand(List<Medium> medien)
     {
         assert medien != null : "Vorbedingung verletzt: medien != null";
-        assert!medien.isEmpty() : "Vorbedingung verletzt: !medien.isEmpty()";
+        assert !medien.isEmpty() : "Vorbedingung verletzt: !medien.isEmpty()";
 
         boolean result = true;
         for (Medium medium : medien)

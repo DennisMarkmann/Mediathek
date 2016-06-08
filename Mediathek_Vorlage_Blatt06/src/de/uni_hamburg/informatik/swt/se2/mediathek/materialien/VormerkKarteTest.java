@@ -68,12 +68,11 @@ public class VormerkKarteTest
         assertEquals(_kunde3, vormerkerListe.poll());
     }
 
-    @Test
+    @Test(expected=AssertionError.class)
     public void testSelberKundeZweimalVormerkenNichtMöglich()
             throws VormerkException
     {
         _vormerkkarte.addVormerker(_kunde2);
-        //TODO fix test
         _vormerkkarte.addVormerker(_kunde2);
         vormerkerListe = _vormerkkarte.getVormerkerListe();
         assertEquals(_kunde1, vormerkerListe.poll());
