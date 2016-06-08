@@ -1,6 +1,7 @@
 package de.uni_hamburg.informatik.swt.se2.mediathek.materialien;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Kundennummer;
+import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.CD;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.werkzeuge.vormerken.VormerkException;
 
@@ -25,6 +26,7 @@ public class VormerkKarteTest
     @Before
     public void generateTestDate() throws VormerkException
     {
+        _medium = new CD("Titel", "Tada", "Dennis", 100);
         _kunde1 = new Kunde(new Kundennummer(123451), "ich1", "du1");
         _kunde2 = new Kunde(new Kundennummer(123452), "ich2", "du2");
         _kunde3 = new Kunde(new Kundennummer(123453), "ich3", "du3");
