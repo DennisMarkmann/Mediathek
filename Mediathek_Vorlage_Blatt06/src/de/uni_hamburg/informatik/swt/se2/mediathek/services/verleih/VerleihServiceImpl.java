@@ -70,7 +70,7 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert kundenstamm != null : "Vorbedingung verletzt: kundenstamm  != null";
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand  != null";
         assert initialBestand != null : "Vorbedingung verletzt: initialBestand  != null";
-        
+
         _verleihkarten = erzeugeVerleihkartenBestand(initialBestand);
         _kundenstamm = kundenstamm;
         _medienbestand = medienbestand;
@@ -407,7 +407,6 @@ public class VerleihServiceImpl extends AbstractObservableService
     public void vormerkenAn(Kunde kunde, List<Medium> medien)
             throws ProtokollierException, VormerkException
     {
-        //TODO assert + auch prüfung wie in GUI ob vormerken möglich
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 

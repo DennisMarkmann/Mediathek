@@ -177,12 +177,13 @@ public class VormerkWerkzeug
     private void merkeAusgewaehlteMedienVor()
             throws VormerkException, ProtokollierException
     {
-
         List<Medium> selectedMedien = _medienAuflisterWerkzeug
             .getSelectedMedien();
         Kunde selectedKunde = _kundenAuflisterWerkzeug.getSelectedKunde();
-        _verleihService.vormerkenAn(selectedKunde, selectedMedien);
-
+        if (istVormerkenMoeglich())
+        {
+            _verleihService.vormerkenAn(selectedKunde, selectedMedien);
+        }
     }
 
     /**
