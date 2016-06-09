@@ -1,6 +1,5 @@
 package de.uni_hamburg.informatik.swt.se2.mediathek.materialien;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -64,12 +63,12 @@ public class VormerkKarte
      * @ensure !istVorgemerktVonKunde(vormerker)
      * @ensure _vormerkerListe.size() <= 2
      * @ensure kunde != null
-     * 
+     *
      */
     public void addVormerker(Kunde kunde) throws VormerkException
     {
         assert kunde != null : "Vorbedingung verletzt: kunde != null";
-        assert !istVorgemerktVonKunde(
+        assert!istVorgemerktVonKunde(
                 kunde) : "Vorbedingung verletzt: !istVorgemerktVonKunde(vormerker)";
         assert _vormerkerListe
             .size() <= 2 : "Vorbedingung verletzt: _vormerkerListe.size() <= 2";
@@ -147,7 +146,7 @@ public class VormerkKarte
      * @param index des Kunden der returned werden soll.
      *
      * @return Kunde an dem angegebenen Index.
-     * 
+     *
      * @ensure index <= 2
      */
 
@@ -199,7 +198,7 @@ public class VormerkKarte
      *
      * @param kunde auf den geprüft wird.
      * @return boolean ob der Kunde sich in der Liste befindet oder nicht.
-     * 
+     *
      * @ensure kunde != null
      * @ensure _vormerkerListe != null
      */
