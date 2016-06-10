@@ -133,9 +133,17 @@ public class VerleihServiceImpl extends AbstractObservableService
         return result;
     }
 
+    /**
+     * Liefert alle Medien, die von dem gegebenen Kunden ausgeliehen sind.
+     * @param kunde
+     * 
+     * @ensure kunde != null
+     * @ensure kundeImBestand(kunde) = true
+     */
     @Override
     public List<Medium> getAusgelieheneMedienFuer(Kunde kunde)
     {
+        assert kunde != null : "Vorbedingung verletzt: null";
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
         List<Medium> result = new ArrayList<Medium>();
@@ -404,6 +412,9 @@ public class VerleihServiceImpl extends AbstractObservableService
      *
      * @param kunde für den die medien vorgemerkt werden sollen.
      * @param medien die für den Kunden vorgemerkt werden sollen.
+     * 
+     * @ensure kunde != null
+     * @ensure kundeImBestand(kunde) = true
      */
 
     @Override
