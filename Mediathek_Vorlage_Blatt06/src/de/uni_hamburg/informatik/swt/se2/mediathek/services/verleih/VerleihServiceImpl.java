@@ -403,7 +403,9 @@ public class VerleihServiceImpl extends AbstractObservableService
      * Setzt eine Vormerkung von einem Kunden an ein Medium.
      *
      * @param kunde für den die medien vorgemerkt werden sollen.
-     * @param medien die für den Kunden vorgemerkt werden sollen.
+     * @param medien die für den Kunden vorgemerkt werden sollen.^
+     * 
+     * @ensure medienImBestand(medien)
      */
 
     @Override
@@ -413,6 +415,8 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert kunde != null : "Vorbedingung verletzt: null";
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+        assert medienImBestand(
+                medien) : "Vorbedingung verletzt: medienImBestand(medien)";
 
         for (Medium medium : medien)
         {
