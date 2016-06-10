@@ -133,6 +133,13 @@ public class VerleihServiceImpl extends AbstractObservableService
         return result;
     }
 
+    /**
+     * Liefert alle Medien, die von dem gegebenen Kunden ausgeliehen sind.
+     * @param kunde
+     * 
+     * @ensure kunde != null
+     * @ensure kundeImBestand(kunde) = true
+     */
     @Override
     public List<Medium> getAusgelieheneMedienFuer(Kunde kunde)
     {
