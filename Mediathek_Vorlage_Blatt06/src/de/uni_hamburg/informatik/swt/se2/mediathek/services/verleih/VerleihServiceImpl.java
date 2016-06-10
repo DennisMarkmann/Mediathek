@@ -153,6 +153,7 @@ public class VerleihServiceImpl extends AbstractObservableService
     @Override
     public Kunde getEntleiherFuer(Medium medium)
     {
+        assert medium != null : "Vorbedingung verletzt: null";
         assert istVerliehen(
                 medium) : "Vorbedingung verletzt: istVerliehen(medium)";
         Verleihkarte verleihkarte = _verleihkarten.get(medium);
@@ -162,6 +163,7 @@ public class VerleihServiceImpl extends AbstractObservableService
     @Override
     public Verleihkarte getVerleihkarteFuer(Medium medium)
     {
+        assert medium != null : "Vorbedingung verletzt: null";
         return _verleihkarten.get(medium);
     }
 
@@ -174,6 +176,7 @@ public class VerleihServiceImpl extends AbstractObservableService
     @Override
     public List<Verleihkarte> getVerleihkartenFuer(Kunde kunde)
     {
+        assert kunde != null : "Vorbedingung verletzt: null";
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
         List<Verleihkarte> result = new ArrayList<Verleihkarte>();
@@ -407,6 +410,7 @@ public class VerleihServiceImpl extends AbstractObservableService
     public void vormerkenAn(Kunde kunde, List<Medium> medien)
             throws ProtokollierException, VormerkException
     {
+        assert kunde != null : "Vorbedingung verletzt: null";
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 

@@ -68,7 +68,7 @@ public class VormerkKarte
     public void addVormerker(Kunde kunde) throws VormerkException
     {
         assert kunde != null : "Vorbedingung verletzt: kunde != null";
-        assert!istVorgemerktVonKunde(
+        assert !istVorgemerktVonKunde(
                 kunde) : "Vorbedingung verletzt: !istVorgemerktVonKunde(vormerker)";
         assert _vormerkerListe
             .size() <= 2 : "Vorbedingung verletzt: _vormerkerListe.size() <= 2";
