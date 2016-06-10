@@ -85,16 +85,12 @@ public class VerleihServiceImpl extends AbstractObservableService
      *
      * @throws ProtokollierException falls zum Beispiel die Datei gesperrt ist in die protokolliert werden soll.
      * 
-     * @ensure kunde != null
-     * @ensure medium != null
      * @ensure kundeImBestand(kunde)
      * @ensure mediumImBestand(medium)
      */
     void entferneVormerkKarte(Medium medium, Kunde kunde)
             throws ProtokollierException
     {
-        assert kunde != null : "Vorbedingung verletzt: kunde != null";
-        assert medium != null : "Vorbedingung verletzt: medium != null";
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
         assert mediumImBestand(
@@ -160,7 +156,8 @@ public class VerleihServiceImpl extends AbstractObservableService
     @Override
     public Kunde getEntleiherFuer(Medium medium)
     {
-        assert medium != null : "Vorbedingung verletzt: null";
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: medienImBestand(medien)";
         assert istVerliehen(
                 medium) : "Vorbedingung verletzt: istVerliehen(medium)";
         Verleihkarte verleihkarte = _verleihkarten.get(medium);
@@ -170,7 +167,8 @@ public class VerleihServiceImpl extends AbstractObservableService
     @Override
     public Verleihkarte getVerleihkarteFuer(Medium medium)
     {
-        assert medium != null : "Vorbedingung verletzt: null";
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: medienImBestand(medien)";
         return _verleihkarten.get(medium);
     }
 
@@ -183,7 +181,6 @@ public class VerleihServiceImpl extends AbstractObservableService
     @Override
     public List<Verleihkarte> getVerleihkartenFuer(Kunde kunde)
     {
-        assert kunde != null : "Vorbedingung verletzt: null";
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
         List<Verleihkarte> result = new ArrayList<Verleihkarte>();
@@ -413,13 +410,13 @@ public class VerleihServiceImpl extends AbstractObservableService
      * @param medien die für den Kunden vorgemerkt werden sollen.^
      * 
      * @ensure medienImBestand(medien)
+     * @ensure kundeImBestand(kunde)
      */
 
     @Override
     public void vormerkenAn(Kunde kunde, List<Medium> medien)
             throws ProtokollierException, VormerkException
     {
-        assert kunde != null : "Vorbedingung verletzt: null";
         assert kundeImBestand(
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
         assert medienImBestand(
